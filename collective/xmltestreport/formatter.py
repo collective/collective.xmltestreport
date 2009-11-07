@@ -148,6 +148,12 @@ class XMLOutputFormattingWrapper(object):
                     failureNode.set('type', str(excType))
                     failureNode.text = errorMessage + '\n\n' + stackTrace
             
+            # XXX: We don't have a good way to capture these yet
+            systemOutNode = ElementTree.Element('system-out')
+            testSuiteNode.append(systemOutNode)
+            systemErrNode = ElementTree.Element('system-err')
+            testSuiteNode.append(systemErrNode)
+                
             # Write file
             outputFile = open(filename, 'w')
             outputFile.write(prettyXML(testSuiteNode))
