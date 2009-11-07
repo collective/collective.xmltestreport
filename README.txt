@@ -35,9 +35,11 @@ When buildout is run, you should have a script in ``bin/test`` and a directory
 ``parts/test``.
 
 To run the tests, use the ``bin/test`` script. If you pass the ``-x`` option,
-test reports will be written to the ``parts/test`` directory::
+test reports will be written to ``parts/test/reports`` directory::
 
     $ bin/test -x -s my.package
 
 Use ``bin/test --help`` for a full list of options.
 
+If you are using Hudson, you can now configure the build to publish JUnit
+test reports for ``<buildoutdir>/parts/test/testreports/*.xml``.

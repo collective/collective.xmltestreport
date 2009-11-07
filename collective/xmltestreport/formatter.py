@@ -1,3 +1,5 @@
+import os
+import os.path
 import socket
 import datetime
 import traceback
@@ -57,7 +59,6 @@ class XMLOutputFormattingWrapper(object):
         return self.delegate.test_success(test, seconds)
     
     def _record(self, test, seconds, failure=None, error=None):
-        
         testClassName = "%s.%s" % (test.__module__, test.__class__.__name__,)
         testId = test.id()
         
@@ -65,6 +66,23 @@ class XMLOutputFormattingWrapper(object):
         if hasattr(test, '_dt_test'):
             testSuite = test._dt_test.name
             testName = testSuite
+            
+            # Attempt to calculate a suite name based on the filename
+            filename = getattr(test._dt_test, 'filename', None)
+            if filename is not None:
+                # lop off whatever portion of the path we have in common
+                # with the current working directory; crude, but about as
+                # much as we can do :(
+                filenameParts = filename.split(os.path.sep)
+                cwdParts = os.getcwd().split(os.path.sep)
+                longest = max(len(filenameParts), len(cwdParts))
+                for i in range(longest):
+                    if filenameParts[i] != cwdParts[i]:
+                        break
+                
+                if i < len(filenameParts) - 1:
+                    testSuite = 'doctest-' + '.'.join(filenameParts[i:])
+        
         else:
             testSuite = testClassName
             testName = testId[len(testClassName)+1:]
@@ -86,8 +104,13 @@ class XMLOutputFormattingWrapper(object):
         timestamp = datetime.datetime.now().isoformat()
         hostname = socket.gethostname()
         
+        workingDir = os.getcwd()
+        reportsDir = os.path.join(workingDir, 'testreports')
+        if not os.path.exists(reportsDir):
+            os.mkdir(reportsDir)
+        
         for name, suite in self._testSuites.items():
-            filename = name + '.xml'
+            filename = os.path.join(reportsDir, name + '.xml')
             
             testSuiteNode = ElementTree.Element('testsuite')
             
