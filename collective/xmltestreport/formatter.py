@@ -8,6 +8,8 @@ from elementtree import ElementTree
 
 from collective.xmltestreport.utils import prettyXML
 
+from zope.testing.doctest import DocFileCase, DocTestCase
+
 class TestSuiteInfo(object):
     
     def __init__(self):
@@ -63,13 +65,12 @@ class XMLOutputFormattingWrapper(object):
         testId = test.id()
         
         # Is this a doctest?
-        if hasattr(test, '_dt_test'):
-            testSuite = test._dt_test.name
-            testName = testSuite
+        if isinstance(test, DocTestCase):
+            # Attempt to calculate a suite name and pseudo class name based on the filename
             
-            # Attempt to calculate a suite name based on the filename
-            filename = getattr(test._dt_test, 'filename', None)
-            if filename is not None:
+            if isinstance(test, DocFileCase):
+                filename = test._dt_test.filename
+                
                 # lop off whatever portion of the path we have in common
                 # with the current working directory; crude, but about as
                 # much as we can do :(
@@ -81,8 +82,28 @@ class XMLOutputFormattingWrapper(object):
                         break
                 
                 if i < len(filenameParts) - 1:
-                    testSuite = 'doctest-' + '.'.join(filenameParts[i:])
-        
+                    
+                    # The real package name couldn't have a '.' in it. This
+                    # makes sense for the common egg naming patterns, and 
+                    # will still work in other cases
+                    
+                    suiteNameParts = []
+                    for part in reversed(filenameParts[i:-1]):
+                        if '.' in part:
+                            break
+                        suiteNameParts.insert(0, part)
+                    
+                    # don't lose the filename, which would have a . in it
+                    suiteNameParts.append(filenameParts[-1])
+                    
+                    testSuite = 'doctest-' + '-'.join(suiteNameParts)
+                    testName = test._dt_test.name
+                    testClassName = '.'.join(suiteNameParts[:-1])
+            else:
+                testDottedNameParts = test._dt_test.name.split('.')
+                testSuite = testClassName = '.'.join(testDottedNameParts[:-1])
+                testName = testDottedNameParts[-1]
+                
         else:
             testSuite = testClassName
             testName = testId[len(testClassName)+1:]
