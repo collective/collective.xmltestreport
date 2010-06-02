@@ -1,5 +1,19 @@
 Changelog
 =========
+1.1b5 - 2010-05-28
+------------------
+
+* now package are also shown
+
+1.1b3 - 2010-05-20
+------------------
+
+* changed how doctests and the classname are detected 
+
+1.1b2 - 2010-05-12
+------------------
+
+* merge of collective.xmltestreport and tranchitella.recipe.testrunner
 
 1.0b2 - 2009-11-08
 ------------------

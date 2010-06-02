@@ -10,6 +10,9 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
+# Addendum: This recipe merges collective.xmltestreport and 
+# tranchitella.recipe.testrunner 
+#
 ##############################################################################
 """A recipe based on zc.recipe.testrunner
 """
@@ -37,7 +40,7 @@ class TestRunner:
     def install(self):
         options = self.options
         dest = []
-        eggs, ws = self.egg.working_set(('zope.testing', 'collective.xmltestreport', ))
+        eggs, ws = self.egg.working_set(('coverage', 'collective.xmltestreport', ))
 
         test_paths = [ws.find(pkg_resources.Requirement.parse(spec)).location
                       for spec in eggs]

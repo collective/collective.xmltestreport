@@ -1,5 +1,5 @@
 import os
-import os.path
+import sys
 import socket
 import datetime
 import traceback
@@ -8,7 +8,7 @@ from elementtree import ElementTree
 
 from collective.xmltestreport.utils import prettyXML
 
-from zope.testing.doctest import DocFileCase, DocTestCase
+from zope.testing.doctest import DocTestCase
 
 class TestSuiteInfo(object):
     
@@ -41,9 +41,12 @@ class XMLOutputFormattingWrapper(object):
     operations, but also prepares an element tree of test output.
     """
     
-    def __init__(self, delegate):
-        self.delegate = delegate
+    def __init__(self, options):
+        self.delegate = options.output
         self._testSuites = {} # test class -> list of test names
+        self.testresult_dir = os.getcwd()
+        if options.testresult_dir:
+            self.testresult_dir = options.testresult_dir 
         
     def __getattr__(self, name):
         return getattr(self.delegate, name)
@@ -67,43 +70,17 @@ class XMLOutputFormattingWrapper(object):
         # Is this a doctest?
         if isinstance(test, DocTestCase):
             # Attempt to calculate a suite name and pseudo class name based on the filename
-            
-            if isinstance(test, DocFileCase):
-                filename = test._dt_test.filename
-                
-                # lop off whatever portion of the path we have in common
-                # with the current working directory; crude, but about as
-                # much as we can do :(
-                filenameParts = filename.split(os.path.sep)
-                cwdParts = os.getcwd().split(os.path.sep)
-                longest = max(len(filenameParts), len(cwdParts))
-                for i in range(longest):
-                    if filenameParts[i] != cwdParts[i]:
-                        break
-                
-                if i < len(filenameParts) - 1:
-                    
-                    # The real package name couldn't have a '.' in it. This
-                    # makes sense for the common egg naming patterns, and 
-                    # will still work in other cases
-                    
-                    suiteNameParts = []
-                    for part in reversed(filenameParts[i:-1]):
-                        if '.' in part:
-                            break
-                        suiteNameParts.insert(0, part)
-                    
-                    # don't lose the filename, which would have a . in it
-                    suiteNameParts.append(filenameParts[-1])
-                    
-                    testSuite = 'doctest-' + '-'.join(suiteNameParts)
-                    testName = test._dt_test.name
-                    testClassName = '.'.join(suiteNameParts[:-1])
-            else:
-                testDottedNameParts = test._dt_test.name.split('.')
-                testSuite = testClassName = '.'.join(testDottedNameParts[:-1])
-                testName = testDottedNameParts[-1]
-                
+            filepath = os.path.realpath(test._dt_test.filename)
+            filedir = os.path.dirname(filepath)
+            filename = os.path.basename(filepath)
+            suiteName = filename
+            mod = [module for name, module in sys.modules.items() if "%s/__init__" % filedir in str(module)]
+            if len(mod) > 0:
+               suiteName = mod[0].__name__
+            testSuite = '%s-doctest' % suiteName
+            testName = test._dt_test.name
+            testClassName = suiteName
+               
         else:
             testSuite = testClassName
             testName = testId[len(testClassName)+1:]
@@ -125,7 +102,7 @@ class XMLOutputFormattingWrapper(object):
         timestamp = datetime.datetime.now().isoformat()
         hostname = socket.gethostname()
         
-        workingDir = os.getcwd()
+        workingDir = self.testresult_dir
         reportsDir = os.path.join(workingDir, 'testreports')
         if not os.path.exists(reportsDir):
             os.mkdir(reportsDir)

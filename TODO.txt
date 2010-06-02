@@ -1,0 +1,9 @@
+Todo
+[] add some tests
+
+Nice to have
+[] option.testresultdir should be set with os.getcwd(), 
+  insted of calling it twice in runner and formatter
+[] testresultdir should get a better option place
+
+

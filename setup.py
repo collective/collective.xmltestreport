@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '1.0b3'
+version = '1.1b6'
 
 setup(name='collective.xmltestreport',
       version=version,
@@ -26,6 +26,7 @@ setup(name='collective.xmltestreport',
           'setuptools',
           'zope.testing',
           'elementtree',
+          'coverage',
       ],
       entry_points="""
       [zc.buildout]
