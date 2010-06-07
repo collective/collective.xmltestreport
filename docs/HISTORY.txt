@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0b3 - 2010-06-07
+------------------
+
+* Rename the ``-x`` option ``--xml``. This is necessary by zope.testing now
+  uses the ``-x`` option for something else. :-(
+
 1.0b2 - 2009-11-08
 ------------------
 
