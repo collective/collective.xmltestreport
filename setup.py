@@ -1,7 +1,24 @@
 from setuptools import setup, find_packages
 import os
+import platform
 
 version = '1.0b4'
+
+
+requires = [
+    'setuptools',
+    'zope.testing',
+    'elementtree',
+    'zc.recipe.egg',
+]
+
+if platform.python_version_tuple() < ['2', '5']:
+    # Starting from Python 2.5, the stdlib ships the `elementtree` package as
+    # `xml.etree`.
+    # So we need this dependency only if we have a too old (before 2.5) version
+    # of Python.
+    requires.append('elementtree')
+
 
 setup(name='collective.xmltestreport',
       version=version,
@@ -22,11 +39,7 @@ setup(name='collective.xmltestreport',
       namespace_packages=['collective'],
       include_package_data=True,
       zip_safe=False,
-      install_requires=[
-          'setuptools',
-          'zope.testing',
-          'elementtree',
-      ],
+      install_requires=requires,
       entry_points="""
       [zc.buildout]
       default = collective.xmltestreport.recipe:TestRunner

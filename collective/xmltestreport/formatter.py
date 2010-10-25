@@ -4,7 +4,12 @@ import socket
 import datetime
 import traceback
 
-from elementtree import ElementTree
+try:
+    # Python >= 2.5
+    from xml.etree import ElementTree
+except ImportError:
+    # Python < 2.5
+    from elementtree import ElementTree
 
 from collective.xmltestreport.utils import prettyXML
 

@@ -1,4 +1,9 @@
-from elementtree import ElementTree
+try:
+    # Python >= 2.5
+    from xml.etree import ElementTree
+except ImportError:
+    # Python < 2.5
+    from elementtree import ElementTree
 
 def indent(node, level=0):
     """Prepare XML for pretty-printing
