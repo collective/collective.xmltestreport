@@ -26,6 +26,7 @@ setup(name='collective.xmltestreport',
           'setuptools',
           'zope.testing',
           'elementtree',
+          'zc.recipe.egg',
       ],
       entry_points="""
       [zc.buildout]
