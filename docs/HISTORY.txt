@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0b4 - unreleased
+------------------
+
+* Add compatibility for zope.testing >= 3.10 & zope.testrunner
+
 1.0b3 - 2010-06-07
 ------------------
 
