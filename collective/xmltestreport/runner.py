@@ -13,7 +13,7 @@
 ##############################################################################
 """Test runner based on zope.testing.testrunner
 """
-
+import os
 import sys
 import optparse
 
@@ -34,12 +34,24 @@ be in the buildout `parts` directroy, e.g. `parts/test`.
 """)
 parser.add_option_group(xmlOptions)
 
+# Setup --nowarning filter
+def filter_warnings(option, opt, *ignored):
+    import warnings
+    warnings.simplefilter('ignore', Warning, append=True)
+
+noWarning = optparse.OptionGroup(parser, "Filter warnings",
+    "Install a filter to suppress warnings emitted by code")
+noWarning.add_option('--nowarning', action="callback",
+            callback=filter_warnings,
+            help="Install a filter to suppress warnings emitted by code")
+parser.add_option_group(noWarning)
+
 # Test runner and execution methods
 
 class XMLAwareRunner(Runner):
     """Add output formatter delegate to the test runner before execution
     """
-    
+
     def configure(self):
         super(XMLAwareRunner, self).configure()
         self.options.output = XMLOutputFormattingWrapper(self.options.output)
@@ -59,16 +71,31 @@ def run_internal(defaults=None, args=None, script_parts=None):
     Returns whether errors or failures occured during testing.
 
     """
-    
+    if defaults and defaults[0] == '-C':
+        setup_zope2_Products(defaults[:2])
+        defaults = defaults[2:]
+
     try:
         runner = XMLAwareRunner(defaults, args, script_parts=script_parts)
     except TypeError: # zope.testing <= 3.7
         runner = XMLAwareRunner(defaults, args)
-    
+
     runner.run()
-    
+
     # Write XML file of results if -x option is given
     if runner.options.xmlOutput:
         runner.options.output.writeXMLReports()
-    
+
     return runner.failed
+
+def setup_zope2_Products(zargs):
+    """ Magic setup
+    """
+    from Zope2.Startup import zopectl
+    from Zope2.Startup import handlers
+    options = zopectl.ZopeCtlOptions()
+    options.realize(zargs, doc=__doc__)
+    handlers.root_handler(options.configroot)
+    import App.config
+    App.config.setConfiguration(options.configroot)
+    os.environ['PYTHONPATH'] = os.path.pathsep.join(sys.path)

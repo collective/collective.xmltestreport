@@ -1,6 +1,13 @@
 Changelog
 =========
 
+1.0b4 - unreleased
+------------------
+
+* Added '--nowarning' option
+* Make this package Zope2 'Products' aware if zope-conf path is provided within
+zc.buildout
+
 1.0b3 - 2010-06-07
 ------------------
 

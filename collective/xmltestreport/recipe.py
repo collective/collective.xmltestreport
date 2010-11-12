@@ -42,9 +42,15 @@ class TestRunner:
         test_paths = [ws.find(pkg_resources.Requirement.parse(spec)).location
                       for spec in eggs]
 
-        defaults = options.get('defaults', '').strip()
-        if defaults:
-            defaults = '(%s) + ' % defaults
+        defaults = ''
+
+        zope_conf = options.get('zope-conf', '').strip()
+        if zope_conf:
+            defaults += "['-C', '%s']" % zope_conf
+
+        opt_defaults = options.get('defaults', '').strip()
+        if opt_defaults:
+            defaults += ' + (%s) + ' % opt_defaults
 
         wd = options.get('working-directory', '')
         if not wd:
