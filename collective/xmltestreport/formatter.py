@@ -2,6 +2,7 @@ import os
 import os.path
 import socket
 import datetime
+import doctest
 import traceback
 
 try:
@@ -68,12 +69,11 @@ class XMLOutputFormattingWrapper(object):
     def _record(self, test, seconds, failure=None, error=None):
         testClassName = "%s.%s" % (test.__module__, test.__class__.__name__,)
         testId = test.id()
-        
         # Is this a doctest?
-        if isinstance(test, DocTestCase):
+        if isinstance(test, DocTestCase) or isinstance(test, doctest.DocTestCase):
             # Attempt to calculate a suite name and pseudo class name based on the filename
             
-            if isinstance(test, DocFileCase):
+            if isinstance(test, DocTestCase) or isinstance(test, doctest.DocFileCase):
                 filename = test._dt_test.filename
                 
                 # lop off whatever portion of the path we have in common
