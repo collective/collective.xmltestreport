@@ -7,6 +7,10 @@ Changelog
 - Distribution metadata cleanup.
   [hannosch]
 
+- Use built-in `xml.etree` in favor of `elementree` in Python 2.5+ and added
+  missing dependency on `zc.recipe.egg`.
+  [multani]
+
 1.0b3 - 2010-06-07
 ------------------
 
