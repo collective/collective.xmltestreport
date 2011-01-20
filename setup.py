@@ -7,6 +7,7 @@ version = '1.1'
 requires = [
     'setuptools',
     'zope.testing',
+    'zope.testrunner',
     'elementtree',
     'zc.recipe.egg',
 ]
