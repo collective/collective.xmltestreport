@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0b4 - unreleased
+------------------
+
+- Distribution metadata cleanup.
+  [hannosch]
+
 1.0b3 - 2010-06-07
 ------------------
 

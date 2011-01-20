@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
-import os
-import platform
+import sys
 
 version = '1.0b4'
 
@@ -12,7 +11,7 @@ requires = [
     'zc.recipe.egg',
 ]
 
-if platform.python_version_tuple() < ['2', '5']:
+if sys.version_info < (2, 5):
     # Starting from Python 2.5, the stdlib ships the `elementtree` package as
     # `xml.etree`.
     # So we need this dependency only if we have a too old (before 2.5) version
@@ -22,13 +21,12 @@ if platform.python_version_tuple() < ['2', '5']:
 
 setup(name='collective.xmltestreport',
       version=version,
-      description="A test runner which can output an XML report compatible with JUnit and Hudson",
+      description="A test runner which can output an XML report compatible "
+                  "with JUnit and Hudson",
       long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+                       open("CHANGES.txt").read(),
       classifiers=[
         "Programming Language :: Python",
-        "Topic :: Software Development :: Libraries :: Python Modules",
         ],
       keywords='hudson junit xml zope.testing',
       author='Martin Aspeli',
