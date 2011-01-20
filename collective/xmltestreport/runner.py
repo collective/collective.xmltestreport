@@ -29,7 +29,8 @@ from collective.xmltestreport.formatter import XMLOutputFormattingWrapper
 
 # Set up XML output parsing
 
-xmlOptions = optparse.OptionGroup(parser, "Generate XML test reports", "Support for JUnit style XML output")
+xmlOptions = optparse.OptionGroup(parser, "Generate XML test reports",
+    "Support for JUnit style XML output")
 xmlOptions.add_option(
     '--xml', action="store_true", dest='xmlOutput',
     help="""\
@@ -49,6 +50,7 @@ class XMLAwareRunner(Runner):
         super(XMLAwareRunner, self).configure()
         self.options.output = XMLOutputFormattingWrapper(self.options.output)
 
+
 def run(defaults=None, args=None, script_parts=None):
     """Main runner function which can be and is being used from main programs.
 
@@ -57,6 +59,7 @@ def run(defaults=None, args=None, script_parts=None):
     """
     failed = run_internal(defaults, args, script_parts=script_parts)
     sys.exit(int(failed))
+
 
 def run_internal(defaults=None, args=None, script_parts=None):
     """Execute tests.

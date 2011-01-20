@@ -5,6 +5,7 @@ except ImportError:
     # Python < 2.5
     from elementtree import ElementTree
 
+
 def indent(node, level=0):
     """Prepare XML for pretty-printing
     """
@@ -32,6 +33,7 @@ def indent(node, level=0):
             else:
                 if not child.tail or not child.tail.strip():
                     child.tail = "\n" + node_indent
+
 
 def prettyXML(tree):
     """Get pretty-printed string

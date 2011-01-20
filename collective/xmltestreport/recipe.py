@@ -16,9 +16,11 @@
 
 import os
 import os.path
+
 import pkg_resources
 import zc.buildout.easy_install
 import zc.recipe.egg
+
 
 class TestRunner:
 
@@ -37,7 +39,8 @@ class TestRunner:
     def install(self):
         options = self.options
         dest = []
-        eggs, ws = self.egg.working_set(('zope.testing', 'collective.xmltestreport', ))
+        eggs, ws = self.egg.working_set(
+            ('zope.testing', 'collective.xmltestreport', ))
 
         test_paths = [ws.find(pkg_resources.Requirement.parse(spec)).location
                       for spec in eggs]
@@ -105,6 +108,7 @@ os.chdir(%s)
 
 env_template = """os.environ['%s'] = %r
 """
+
 
 def _relativize(base, path):
     base += os.path.sep

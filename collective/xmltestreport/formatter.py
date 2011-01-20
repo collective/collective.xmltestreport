@@ -1,8 +1,8 @@
+import datetime
+import doctest
 import os
 import os.path
 import socket
-import datetime
-import doctest
 import traceback
 
 try:
@@ -31,15 +31,18 @@ class TestSuiteInfo(object):
     def successes(self):
         return self.tests - (self.errors + self.failures)
 
+
 class TestCaseInfo(object):
 
-    def __init__(self, test, time, testClassName, testName, failure=None, error=None):
+    def __init__(self, test, time, testClassName, testName, failure=None,
+                 error=None):
         self.test = test
         self.time = time
         self.testClassName = testClassName
         self.testName = testName
         self.failure = failure
         self.error = error
+
 
 class XMLOutputFormattingWrapper(object):
     """Output formatter which delegates to another formatter for all
@@ -66,11 +69,12 @@ class XMLOutputFormattingWrapper(object):
         return self.delegate.test_success(test, seconds)
 
     def _record(self, test, seconds, failure=None, error=None):
-        testClassName = "%s.%s" % (test.__module__, test.__class__.__name__,)
+        testClassName = "%s.%s" % (test.__module__, test.__class__.__name__, )
         testId = test.id()
         # Is this a doctest?
         if isinstance(test, doctest.DocTestCase):
-            # Attempt to calculate a suite name and pseudo class name based on the filename
+            # Attempt to calculate a suite name and pseudo class name
+            # based on the filename
 
             if isinstance(test, doctest.DocFileCase):
                 filename = test._dt_test.filename
@@ -113,7 +117,8 @@ class XMLOutputFormattingWrapper(object):
             testName = testId[len(testClassName)+1:]
 
         suite = self._testSuites.setdefault(testSuite, TestSuiteInfo())
-        suite.testCases.append(TestCaseInfo(test, seconds, testClassName, testName, failure, error))
+        suite.testCases.append(TestCaseInfo(
+            test, seconds, testClassName, testName, failure, error))
 
         if failure is not None:
             suite.failures += 1
