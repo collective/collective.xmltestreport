@@ -2,12 +2,12 @@ Introduction
 ============
 
 This package provides an extension to the test runner to the one that ships
-with ``zope.testing``, as well as a buildout recipe based on
+with ``zope.testrunner``, as well as a buildout recipe based on
 ``zc.recipe.testrunner`` to install a test script for this test runner.
 
-The test runner is identical to the one in ``zope.testing``, but it is capable
-of writing test reports in the XML format output by JUnit/Ant. This allows
-the test results to be analysed by tools such as the Hudson continuous
+The test runner is identical to the one in ``zope.testrunner``, but it is
+capable of writing test reports in the XML format output by JUnit/Ant. This
+allows the test results to be analysed by tools such as the Hudson continuous
 integration server.
 
 Usage
@@ -26,7 +26,7 @@ In your buildout, add a part like this::
     recipe = collective.xmltestreport
     eggs = 
         my.package
-    defaults = ['--exit-with-status', '--auto-color', '--auto-progress']
+    defaults = ['--auto-color', '--auto-progress']
 
 The recipe accepts the same options as zc.recipe.testrunner, so look at its
 documentation for details.
