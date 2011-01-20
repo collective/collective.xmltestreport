@@ -17,8 +17,13 @@
 import sys
 import optparse
 
-from zope.testing.testrunner.runner import Runner
-from zope.testing.testrunner.options import parser
+try:
+    from zope.testrunner.runner import Runner
+    from zope.testrunner.options import parser
+except ImportError:
+    from zope.testing.testrunner.runner import Runner
+    from zope.testing.testrunner.options import parser
+
 
 from collective.xmltestreport.formatter import XMLOutputFormattingWrapper
 

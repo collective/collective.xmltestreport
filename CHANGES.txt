@@ -4,6 +4,10 @@ Changelog
 1.1 - unreleased
 ----------------
 
+- Added support for `zope.testrunner` while retaining support for the older
+  `zope.testing.testrunner`.
+  [hannosch]
+
 - No longer use the deprecated `zope.testing.doctest`.
   [hannosch]
 
