@@ -40,7 +40,7 @@ class TestRunner:
         options = self.options
         dest = []
         eggs, ws = self.egg.working_set(
-            ('zope.testing', 'collective.xmltestreport', ))
+            ('zope.testing', 'zope.testrunner', 'collective.xmltestreport', ))
 
         test_paths = [ws.find(pkg_resources.Requirement.parse(spec)).location
                       for spec in eggs]

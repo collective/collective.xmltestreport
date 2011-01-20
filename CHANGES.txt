@@ -4,6 +4,9 @@ Changelog
 1.1 - unreleased
 ----------------
 
+- Require `zope.testrunner` and remove support for zope.testing 3.7.
+  [hannosch]
+
 - Added support for `zope.testrunner` while retaining support for the older
   `zope.testing.testrunner`.
   [hannosch]

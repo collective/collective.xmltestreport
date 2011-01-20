@@ -68,11 +68,7 @@ def run_internal(defaults=None, args=None, script_parts=None):
 
     """
 
-    try:
-        runner = XMLAwareRunner(defaults, args, script_parts=script_parts)
-    except TypeError: # zope.testing <= 3.7
-        runner = XMLAwareRunner(defaults, args)
-
+    runner = XMLAwareRunner(defaults, args, script_parts=script_parts)
     runner.run()
 
     # Write XML file of results if -x option is given
