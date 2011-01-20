@@ -14,7 +14,6 @@ except ImportError:
 
 from collective.xmltestreport.utils import prettyXML
 
-from zope.testing.doctest import DocFileCase, DocTestCase
 
 class TestSuiteInfo(object):
     
@@ -70,10 +69,10 @@ class XMLOutputFormattingWrapper(object):
         testClassName = "%s.%s" % (test.__module__, test.__class__.__name__,)
         testId = test.id()
         # Is this a doctest?
-        if isinstance(test, DocTestCase) or isinstance(test, doctest.DocTestCase):
+        if isinstance(test, doctest.DocTestCase):
             # Attempt to calculate a suite name and pseudo class name based on the filename
             
-            if isinstance(test, DocTestCase) or isinstance(test, doctest.DocFileCase):
+            if isinstance(test, doctest.DocFileCase):
                 filename = test._dt_test.filename
                 
                 # lop off whatever portion of the path we have in common

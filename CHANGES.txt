@@ -1,8 +1,11 @@
 Changelog
 =========
 
-1.0b4 - unreleased
-------------------
+1.1 - unreleased
+----------------
+
+- No longer use the deprecated `zope.testing.doctest`.
+  [hannosch]
 
 - Distribution metadata cleanup.
   [hannosch]
