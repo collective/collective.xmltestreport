@@ -14,6 +14,12 @@ except ImportError:
 
 from collective.xmltestreport.utils import prettyXML
 
+try:
+    import manuel.testing
+    HAVE_MANUEL = True
+except ImportError:
+    HAVE_MANUEL = False
+
 
 class TestSuiteInfo(object):
 
@@ -48,12 +54,7 @@ def get_test_class_name(test):
     return "%s.%s" % (test.__module__, test.__class__.__name__, )
 
 
-def parse_doc_file_case(test):
-    if not isinstance(test, doctest.DocFileCase):
-        return None, None, None
-
-    filename = test._dt_test.filename
-
+def filename_to_suite_name_parts(filename):
     # lop off whatever portion of the path we have in common
     # with the current working directory; crude, but about as
     # much as we can do :(
@@ -78,10 +79,18 @@ def parse_doc_file_case(test):
 
         # don't lose the filename, which would have a . in it
         suiteNameParts.append(filenameParts[-1])
+        return suiteNameParts
 
-        testSuite = 'doctest-' + '-'.join(suiteNameParts)
-        testName = test._dt_test.name
-        testClassName = '.'.join(suiteNameParts[:-1])
+
+def parse_doc_file_case(test):
+    if not isinstance(test, doctest.DocFileCase):
+        return None, None, None
+
+    filename = test._dt_test.filename
+    suiteNameParts = filename_to_suite_name_parts(filename)
+    testSuite = 'doctest-' + '-'.join(suiteNameParts)
+    testName = test._dt_test.name
+    testClassName = '.'.join(suiteNameParts[:-1])
     return testSuite, testName, testClassName
 
 
@@ -93,6 +102,17 @@ def parse_doc_test_case(test):
     testClassName = get_test_class_name(test)
     testSuite = testClassName = '.'.join(testDottedNameParts[:-1])
     testName = testDottedNameParts[-1]
+    return testSuite, testName, testClassName
+
+
+def parse_manuel(test):
+    if not (HAVE_MANUEL and isinstance(test, manuel.testing.TestCase)):
+        return None, None, None
+    filename = test.regions.location
+    suiteNameParts = filename_to_suite_name_parts(filename)
+    testSuite = 'manuel-' + '-'.join(suiteNameParts)
+    testName = suiteNameParts[-1]
+    testClassName = '.'.join(suiteNameParts[:-1])
     return testSuite, testName, testClassName
 
 
@@ -131,7 +151,10 @@ class XMLOutputFormattingWrapper(object):
         return self.delegate.test_success(test, seconds)
 
     def _record(self, test, seconds, failure=None, error=None):
-        for parser in [parse_doc_file_case, parse_doc_test_case, parse_unittest]:
+        for parser in [parse_doc_file_case,
+                       parse_doc_test_case,
+                       parse_manuel,
+                       parse_unittest]:
             testSuite, testName, testClassName = parser(test)
             if (testSuite, testName, testClassName) != (None, None, None):
                 break

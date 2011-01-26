@@ -4,6 +4,12 @@ Changelog
 1.1.1 - unreleased
 ------------------
 
+- Added support for Manuel_ tests. It gets activated when the package under
+  test has tests using `manuel` and this way depends on `manuel`.
+  [icemac]
+
+.. _Manuel: http://pypi.python.org/pypi/manuel
+
 
 1.1 - 2011-01-20
 ----------------
