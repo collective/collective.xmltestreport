@@ -16,15 +16,15 @@ Usage
 In your buildout, add a part like this::
 
     [buildout]
-    parts = 
+    parts =
         ...
         test
-    
+
     ...
-    
+
     [test]
     recipe = collective.xmltestreport
-    eggs = 
+    eggs =
         my.package
     defaults = ['--auto-color', '--auto-progress']
 
@@ -35,7 +35,7 @@ When buildout is run, you should have a script in ``bin/test`` and a directory
 ``parts/test``.
 
 To run the tests, use the ``bin/test`` script. If you pass the ``--xml``
-option, test reports will be written to ``parts/test/reports`` directory::
+option, test reports will be written to ``parts/test/testreports`` directory::
 
     $ bin/test --xml -s my.package
 
