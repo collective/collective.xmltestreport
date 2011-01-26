@@ -43,6 +43,68 @@ class TestCaseInfo(object):
         self.failure = failure
         self.error = error
 
+def get_test_class_name(test):
+    """Compute the test class name from the test object."""
+    return "%s.%s" % (test.__module__, test.__class__.__name__, )
+
+
+def parse_doc_file_case(test):
+    if not isinstance(test, doctest.DocFileCase):
+        return None, None, None
+
+    filename = test._dt_test.filename
+
+    # lop off whatever portion of the path we have in common
+    # with the current working directory; crude, but about as
+    # much as we can do :(
+    filenameParts = filename.split(os.path.sep)
+    cwdParts = os.getcwd().split(os.path.sep)
+    longest = max(len(filenameParts), len(cwdParts))
+    for i in range(longest):
+        if filenameParts[i] != cwdParts[i]:
+            break
+
+    if i < len(filenameParts) - 1:
+
+        # The real package name couldn't have a '.' in it. This
+        # makes sense for the common egg naming patterns, and
+        # will still work in other cases
+
+        suiteNameParts = []
+        for part in reversed(filenameParts[i:-1]):
+            if '.' in part:
+                break
+            suiteNameParts.insert(0, part)
+
+        # don't lose the filename, which would have a . in it
+        suiteNameParts.append(filenameParts[-1])
+
+        testSuite = 'doctest-' + '-'.join(suiteNameParts)
+        testName = test._dt_test.name
+        testClassName = '.'.join(suiteNameParts[:-1])
+    return testSuite, testName, testClassName
+
+
+def parse_doc_test_case(test):
+    if not isinstance(test, doctest.DocTestCase):
+        return None, None, None
+
+    testDottedNameParts = test._dt_test.name.split('.')
+    testClassName = get_test_class_name(test)
+    testSuite = testClassName = '.'.join(testDottedNameParts[:-1])
+    testName = testDottedNameParts[-1]
+    return testSuite, testName, testClassName
+
+
+def parse_unittest(test):
+    testId = test.id()
+    if testId is None:
+        return None, None, None
+    testClassName = get_test_class_name(test)
+    testSuite = testClassName
+    testName = testId[len(testClassName)+1:]
+    return testSuite, testName, testClassName
+
 
 class XMLOutputFormattingWrapper(object):
     """Output formatter which delegates to another formatter for all
@@ -69,52 +131,15 @@ class XMLOutputFormattingWrapper(object):
         return self.delegate.test_success(test, seconds)
 
     def _record(self, test, seconds, failure=None, error=None):
-        testClassName = "%s.%s" % (test.__module__, test.__class__.__name__, )
-        testId = test.id()
-        # Is this a doctest?
-        if isinstance(test, doctest.DocTestCase):
-            # Attempt to calculate a suite name and pseudo class name
-            # based on the filename
+        for parser in [parse_doc_file_case, parse_doc_test_case, parse_unittest]:
+            testSuite, testName, testClassName = parser(test)
+            if (testSuite, testName, testClassName) != (None, None, None):
+                break
 
-            if isinstance(test, doctest.DocFileCase):
-                filename = test._dt_test.filename
-
-                # lop off whatever portion of the path we have in common
-                # with the current working directory; crude, but about as
-                # much as we can do :(
-                filenameParts = filename.split(os.path.sep)
-                cwdParts = os.getcwd().split(os.path.sep)
-                longest = max(len(filenameParts), len(cwdParts))
-                for i in range(longest):
-                    if filenameParts[i] != cwdParts[i]:
-                        break
-
-                if i < len(filenameParts) - 1:
-
-                    # The real package name couldn't have a '.' in it. This
-                    # makes sense for the common egg naming patterns, and
-                    # will still work in other cases
-
-                    suiteNameParts = []
-                    for part in reversed(filenameParts[i:-1]):
-                        if '.' in part:
-                            break
-                        suiteNameParts.insert(0, part)
-
-                    # don't lose the filename, which would have a . in it
-                    suiteNameParts.append(filenameParts[-1])
-
-                    testSuite = 'doctest-' + '-'.join(suiteNameParts)
-                    testName = test._dt_test.name
-                    testClassName = '.'.join(suiteNameParts[:-1])
-            else:
-                testDottedNameParts = test._dt_test.name.split('.')
-                testSuite = testClassName = '.'.join(testDottedNameParts[:-1])
-                testName = testDottedNameParts[-1]
-
-        else:
-            testSuite = testClassName
-            testName = testId[len(testClassName)+1:]
+        if (testSuite, testName, testClassName) == (None, None, None):
+            raise TypeError(
+                "Unknown test type: Could not compute testSuite, testName, "
+                "testClassName: %r" % test)
 
         suite = self._testSuites.setdefault(testSuite, TestSuiteInfo())
         suite.testCases.append(TestCaseInfo(
