@@ -1,8 +1,8 @@
 Changelog
 =========
 
-1.1.1 - unreleased
-------------------
+1.2 (2011-01-27)
+----------------
 
 - Added support for Manuel_ tests. It gets activated when the package under
   test has tests using `manuel` and this way depends on `manuel`.
