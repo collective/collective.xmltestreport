@@ -17,7 +17,7 @@ Changelog
 .. _Manuel: http://pypi.python.org/pypi/manuel
 
 
-1.1 - 2011-01-20
+1.1 (2011-01-20)
 ----------------
 
 - Require `zope.testrunner` and remove support for zope.testing 3.7.
@@ -37,18 +37,18 @@ Changelog
   missing dependency on `zc.recipe.egg`.
   [multani]
 
-1.0b3 - 2010-06-07
+1.0b3 (2010-06-07)
 ------------------
 
 * Rename the ``-x`` option ``--xml``. This is necessary by zope.testing now
   uses the ``-x`` option for something else. :-(
 
-1.0b2 - 2009-11-08
+1.0b2 (2009-11-08)
 ------------------
 
 * Maintain compatibility with zope.testing 3.7.
 
-1.0b1 - 2009-11-07
+1.0b1 (2009-11-07)
 ------------------
 
 * Initial release
