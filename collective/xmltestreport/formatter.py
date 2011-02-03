@@ -60,7 +60,7 @@ def filename_to_suite_name_parts(filename):
     # much as we can do :(
     filenameParts = filename.split(os.path.sep)
     cwdParts = os.getcwd().split(os.path.sep)
-    longest = max(len(filenameParts), len(cwdParts))
+    longest = min(len(filenameParts), len(cwdParts))
     for i in range(longest):
         if filenameParts[i] != cwdParts[i]:
             break

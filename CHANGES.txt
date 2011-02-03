@@ -4,7 +4,9 @@ Changelog
 1.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Fixed ``IndexError`` in formatter which could occur when the path of the
+  current working directory was part of the path + file name of the doctest
+  file but shorter.
 
 
 1.2 (2011-01-27)
