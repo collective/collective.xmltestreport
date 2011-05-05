@@ -131,9 +131,10 @@ class XMLOutputFormattingWrapper(object):
     operations, but also prepares an element tree of test output.
     """
 
-    def __init__(self, delegate):
+    def __init__(self, delegate, cwd):
         self.delegate = delegate
         self._testSuites = {} # test class -> list of test names
+        self.cwd = cwd
 
     def __getattr__(self, name):
         return getattr(self.delegate, name)
@@ -151,6 +152,13 @@ class XMLOutputFormattingWrapper(object):
         return self.delegate.test_success(test, seconds)
 
     def _record(self, test, seconds, failure=None, error=None):
+        try:
+            os.getcwd()
+        except OSError:
+            # In case the current directory is no longer available fallback to
+            # the default working directory.
+            os.chdir(self.cwd)
+
         for parser in [parse_doc_file_case,
                        parse_doc_test_case,
                        parse_manuel,

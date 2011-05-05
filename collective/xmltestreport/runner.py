@@ -13,7 +13,7 @@
 ##############################################################################
 """Test runner based on zope.testing.testrunner
 """
-
+import os
 import sys
 import optparse
 
@@ -48,7 +48,7 @@ class XMLAwareRunner(Runner):
 
     def configure(self):
         super(XMLAwareRunner, self).configure()
-        self.options.output = XMLOutputFormattingWrapper(self.options.output)
+        self.options.output = XMLOutputFormattingWrapper(self.options.output, cwd=os.getcwd())
 
 
 def run(defaults=None, args=None, script_parts=None):

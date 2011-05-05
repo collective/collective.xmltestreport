@@ -4,7 +4,11 @@ Changelog
 1.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed ``OSError`` in formatter which could occur when a test case modifies
+  the current working directory to a directory that gets removed during the
+  test. In such cases we fall back to the working directory as it was in the
+  beginning of the tests.
+  [dokai] 
 
 
 1.2.1 (2011-02-03)
