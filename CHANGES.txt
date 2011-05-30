@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.2 (unreleased)
+1.2.2 (2011-05-30)
 ------------------
 
 - Fixed ``OSError`` in formatter which could occur when a test case modifies
