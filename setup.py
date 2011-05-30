@@ -23,13 +23,13 @@ if sys.version_info < (2, 5):
 setup(name='collective.xmltestreport',
       version=version,
       description="A test runner which can output an XML report compatible "
-                  "with JUnit and Hudson",
+                  "with JUnit and Jenkins",
       long_description=open("README.txt").read() + "\n" +
                        open("CHANGES.txt").read(),
       classifiers=[
         "Programming Language :: Python",
         ],
-      keywords='hudson junit xml zope.testing',
+      keywords='jenkins junit xml zope.testing',
       author='Martin Aspeli',
       author_email='plone-developers@lists.sourceforge.net',
       url='http://pypi.python.org/pypi/collective.xmltestreport',

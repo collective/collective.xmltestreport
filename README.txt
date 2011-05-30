@@ -7,7 +7,7 @@ with ``zope.testrunner``, as well as a buildout recipe based on
 
 The test runner is identical to the one in ``zope.testrunner``, but it is
 capable of writing test reports in the XML format output by JUnit/Ant. This
-allows the test results to be analysed by tools such as the Hudson continuous
+allows the test results to be analysed by tools such as the Jenkins continuous
 integration server.
 
 Usage
@@ -41,5 +41,5 @@ option, test reports will be written to ``parts/test/testreports`` directory::
 
 Use ``bin/test --help`` for a full list of options.
 
-If you are using Hudson, you can now configure the build to publish JUnit
+If you are using Jenkins, you can now configure the build to publish JUnit
 test reports for ``<buildoutdir>/parts/test/testreports/*.xml``.
