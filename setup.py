@@ -8,7 +8,6 @@ requires = [
     'setuptools',
     'zope.testing',
     'zope.testrunner',
-    'elementtree',
     'zc.recipe.egg',
 ]
 
