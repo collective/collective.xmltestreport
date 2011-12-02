@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.3 (unreleased)
+1.2.3 (2011-12-02)
 ------------------
 
 - Only depend on `elementtree` for Python < 2.5.
