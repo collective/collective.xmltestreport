@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.2.4 (unreleased)
+1.2.4 (2011-12-04)
 ------------------
 
 - Fix brown-bag release 1.2.3 that was missing CHANGES.txt etc.
