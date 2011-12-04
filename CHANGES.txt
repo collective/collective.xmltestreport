@@ -4,7 +4,7 @@ Changelog
 1.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix brown-bag release 1.2.3 that was missing CHANGES.txt etc.
 
 
 1.2.3 (2011-12-02)
