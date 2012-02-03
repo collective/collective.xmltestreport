@@ -77,6 +77,8 @@ Fixes:
 - Handle startup failures (import errors) and expose them in the testresults.
   [jone]
 
+- Added options to use Ned Batchelder coverage module to produce 
+  coverage XML and HTML output.
 
 1.2.4 (2011-12-04)
 ------------------

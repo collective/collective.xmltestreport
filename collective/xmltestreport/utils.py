@@ -40,3 +40,27 @@ def prettyXML(tree):
     """
     indent(tree)
     return ElementTree.tostring(tree)
+
+
+#XXX ugly monkey patch
+def _escape_cdata(text, encoding):
+    # escape character data
+    try:
+        # it's worth avoiding do-nothing calls for strings that are
+        # shorter than 500 character, or so.  assume that's, by far,
+        # the most common case in most applications.
+        if "&" in text:
+            text = text.replace("&", "&amp;")
+        if "<" in text:
+            text = text.replace("<", "&lt;")
+        if ">" in text:
+            text = text.replace(">", "&gt;")
+        return text.encode(encoding, "xmlcharrefreplace")
+    except (TypeError, AttributeError):
+        ElementTree._raise_serialization_error(text)
+    #XXX this is the patch
+    except (UnicodeDecodeError):
+        return text.decode("utf-8").encode(encoding, "xmlcharrefreplace")
+
+ElementTree._escape_cdata = _escape_cdata
+

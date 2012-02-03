@@ -140,10 +140,12 @@ class XMLOutputFormattingWrapper(object):
     operations, but also prepares an element tree of test output.
     """
 
-    def __init__(self, delegate, cwd):
-        self.delegate = delegate
+    def __init__(self, options):
+        self.delegate = options.output
         self._testSuites = {} # test class -> list of test names
-        self.cwd = cwd
+        self.testresult_dir = os.getcwd()
+        if options.testresult_dir:
+            self.testresult_dir = options.testresult_dir 
 
     def __getattr__(self, name):
         return getattr(self.delegate, name)
@@ -172,7 +174,7 @@ class XMLOutputFormattingWrapper(object):
         except OSError:
             # In case the current directory is no longer available fallback to
             # the default working directory.
-            os.chdir(self.cwd)
+            os.chdir(self.testresult_dir)
 
         for parser in [parse_doc_file_case,
                        parse_doc_test_case,
@@ -206,7 +208,7 @@ class XMLOutputFormattingWrapper(object):
         timestamp = datetime.datetime.now().isoformat()
         hostname = socket.gethostname()
 
-        workingDir = os.getcwd()
+        workingDir = self.testresult_dir
         reportsDir = os.path.join(workingDir, 'testreports')
         if not os.path.exists(reportsDir):
             os.mkdir(reportsDir)

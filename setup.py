@@ -8,6 +8,7 @@ requires = [
     'zope.testing',
     'zope.testrunner',
     'zc.recipe.egg',
+    'coverage',
 ]
 
 if sys.version_info < (2, 5):
@@ -29,7 +30,7 @@ setup(name='collective.xmltestreport',
           "Programming Language :: Python :: 2.6",
           "Programming Language :: Python :: 2.7",
           ],
-      keywords='jenkins junit xml zope.testing',
+      keywords='jenkins junit xml zope.testing coverage',
       author='Martin Aspeli',
       author_email='plone-developers@lists.sourceforge.net',
       url='https://pypi.python.org/pypi/collective.xmltestreport',
