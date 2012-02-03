@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys
 
-version = '1.2.5dev'
+version = '1.2.6dev'
 
 
 requires = [
@@ -9,6 +9,7 @@ requires = [
     'zope.testing',
     'zope.testrunner',
     'zc.recipe.egg',
+    'coverage',
 ]
 
 if sys.version_info < (2, 5):
@@ -28,7 +29,7 @@ setup(name='collective.xmltestreport',
       classifiers=[
         "Programming Language :: Python",
         ],
-      keywords='jenkins junit xml zope.testing',
+      keywords='jenkins junit xml zope.testing coverage',
       author='Martin Aspeli',
       author_email='plone-developers@lists.sourceforge.net',
       url='http://pypi.python.org/pypi/collective.xmltestreport',

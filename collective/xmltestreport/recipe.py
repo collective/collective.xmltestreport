@@ -10,6 +10,9 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
+# Addendum: This recipe merges collective.xmltestreport and 
+# tranchitella.recipe.testrunner 
+#
 ##############################################################################
 """A recipe based on zc.recipe.testrunner
 """
@@ -39,8 +42,8 @@ class TestRunner:
     def install(self):
         options = self.options
         dest = []
-        eggs, ws = self.egg.working_set(
-            ('zope.testing', 'zope.testrunner', 'collective.xmltestreport', ))
+        eggs, ws = self.egg.working_set(('zope.testing', 'zope.testrunner', 
+            'collective.xmltestreport', 'coverage', ))
 
         test_paths = [ws.find(pkg_resources.Requirement.parse(spec)).location
                       for spec in eggs]
@@ -49,14 +52,12 @@ class TestRunner:
         if defaults:
             defaults = '(%s) + ' % defaults
 
-        wd = options.get('working-directory', '')
-        if not wd:
-            wd = options['location']
-            if os.path.exists(wd):
-                assert os.path.isdir(wd)
-            else:
-                os.mkdir(wd)
-            dest.append(wd)
+        wd = options['location']
+        if os.path.exists(wd):
+            assert os.path.isdir(wd)
+        else:
+            os.mkdir(wd)
+        dest.append(wd)
         wd = os.path.abspath(wd)
 
         if self.egg._relative_paths:
@@ -67,7 +68,7 @@ class TestRunner:
             wd = repr(wd)
             test_paths = map(repr, test_paths)
 
-        initialization = initialization_template % wd
+        initialization = initialization_template
 
         env_section = options.get('environment', '').strip()
         if env_section:
@@ -103,7 +104,6 @@ arg_template = """[
 
 initialization_template = """import os
 sys.argv[0] = os.path.abspath(sys.argv[0])
-os.chdir(%s)
 """
 
 env_template = """os.environ['%s'] = %r
