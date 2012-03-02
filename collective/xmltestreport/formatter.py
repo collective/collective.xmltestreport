@@ -3,6 +3,7 @@ import doctest
 import os
 import os.path
 import socket
+import sys
 import traceback
 
 try:
@@ -55,9 +56,20 @@ def get_test_class_name(test):
 
 
 def filename_to_suite_name_parts(filename):
+    #the module is loaded so we try to get name from sys.modules
+    filepath = os.path.realpath(filename)
+    filedir = os.path.dirname(filepath)
+    filename = os.path.basename(filepath)
+    mod = [module for name, module in sys.modules.items() if "%s/__init__" % filedir in str(module)]
+    if len(mod) > 0:
+        suiteName = mod[0].__name__
+	return [suiteName]
+
+    # XXX is this code still needed!?
     # lop off whatever portion of the path we have in common
     # with the current working directory; crude, but about as
     # much as we can do :(
+
     filenameParts = filename.split(os.path.sep)
     cwdParts = os.getcwd().split(os.path.sep)
     longest = min(len(filenameParts), len(cwdParts))
@@ -80,6 +92,8 @@ def filename_to_suite_name_parts(filename):
         # don't lose the filename, which would have a . in it
         suiteNameParts.append(filenameParts[-1])
         return suiteNameParts
+    # ok too hard we cant find anything but at least we return something
+    return ['unknown']
 
 
 def parse_doc_file_case(test):
