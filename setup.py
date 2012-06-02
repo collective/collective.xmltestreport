@@ -1,14 +1,13 @@
 from setuptools import setup, find_packages
 import sys
 
-version = '1.2.3dev'
+version = '1.2.5dev'
 
 
 requires = [
     'setuptools',
     'zope.testing',
     'zope.testrunner',
-    'elementtree',
     'zc.recipe.egg',
 ]
 
