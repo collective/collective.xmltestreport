@@ -5,6 +5,8 @@ import os.path
 import socket
 import traceback
 
+from zope.testrunner.find import StartUpFailure
+
 try:
     # Python >= 2.5
     from xml.etree import ElementTree
@@ -116,6 +118,13 @@ def parse_manuel(test):
     return testSuite, testName, testClassName
 
 
+def parse_startup_failure(test):
+    if not isinstance(test, StartUpFailure):
+        return None, None, None
+    testModuleName = test.module
+    return testModuleName, 'Startup', testModuleName
+
+
 def parse_unittest(test):
     testId = test.id()
     if testId is None:
@@ -151,6 +160,11 @@ class XMLOutputFormattingWrapper(object):
         self._record(test, seconds)
         return self.delegate.test_success(test, seconds)
 
+    def import_errors(self, import_errors):
+        for test in import_errors:
+            self._record(test, 0, error=test.exc_info)
+        return self.delegate.import_errors(import_errors)
+
     def _record(self, test, seconds, failure=None, error=None):
         try:
             os.getcwd()
@@ -162,6 +176,7 @@ class XMLOutputFormattingWrapper(object):
         for parser in [parse_doc_file_case,
                        parse_doc_test_case,
                        parse_manuel,
+                       parse_startup_failure,
                        parse_unittest]:
             testSuite, testName, testClassName = parser(test)
             if (testSuite, testName, testClassName) != (None, None, None):
