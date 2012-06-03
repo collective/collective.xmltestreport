@@ -4,7 +4,8 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
-- No changes yet.
+- Handle startup failures (import errors) and expose them in the testresults.
+  [jone]
 
 1.2.2 (2011-05-30)
 ------------------
