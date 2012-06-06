@@ -1,17 +1,24 @@
 Changelog
 =========
 
-1.2.4 (unreleased)
-------------------
-
-- Nothing changed yet.
-
-
-1.2.3 (2012-06-06)
+1.2.5 (unreleased)
 ------------------
 
 - Handle startup failures (import errors) and expose them in the testresults.
   [jone]
+
+
+1.2.4 (2011-12-04)
+------------------
+
+- Fix brown-bag release 1.2.3 that was missing CHANGES.txt etc.
+
+
+1.2.3 (2011-12-02)
+------------------
+
+- Only depend on `elementtree` for Python < 2.5.
+
 
 1.2.2 (2011-05-30)
 ------------------
@@ -20,7 +27,7 @@ Changelog
   the current working directory to a directory that gets removed during the
   test. In such cases we fall back to the working directory as it was in the
   beginning of the tests.
-  [dokai] 
+  [dokai]
 
 
 1.2.1 (2011-02-03)
