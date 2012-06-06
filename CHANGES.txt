@@ -4,7 +4,8 @@ Changelog
 1.2.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix import errors problem (TypeError) introduced in 1.2.5.
+  [jone]
 
 
 1.2.5 (2012-06-06)

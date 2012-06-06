@@ -161,8 +161,9 @@ class XMLOutputFormattingWrapper(object):
         return self.delegate.test_success(test, seconds)
 
     def import_errors(self, import_errors):
-        for test in import_errors:
-            self._record(test, 0, error=test.exc_info)
+        if import_errors:
+            for test in import_errors:
+                self._record(test, 0, error=test.exc_info)
         return self.delegate.import_errors(import_errors)
 
     def _record(self, test, seconds, failure=None, error=None):
