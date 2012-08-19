@@ -9,6 +9,7 @@ requires = [
     'zope.testing',
     'zope.testrunner',
     'zc.recipe.egg',
+    'z3c.recipe.scripts'
 ]
 
 if sys.version_info < (2, 5):
