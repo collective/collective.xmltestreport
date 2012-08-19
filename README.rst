@@ -10,6 +10,11 @@ capable of writing test reports in the XML format output by JUnit/Ant. This
 allows the test results to be analysed by tools such as the Jenkins continuous
 integration server.
 
+Code repository
+===============
+
+`https://github.com/collective/collective.xmltestreport`_
+
 Usage
 =====
 
