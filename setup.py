@@ -9,7 +9,7 @@ requires = [
     'zope.testing',
     'zope.testrunner',
     'zc.recipe.egg',
-    'z3c.recipe.scripts'
+    'z3c.recipe.scripts',
 ]
 
 if sys.version_info < (2, 5):
@@ -24,8 +24,8 @@ setup(name='collective.xmltestreport',
       version=version,
       description="A test runner which can output an XML report compatible "
                   "with JUnit and Jenkins",
-      long_description=open("README.txt").read() + "\n" +
-                       open("CHANGES.txt").read(),
+      long_description=open("README.rst").read() + "\n" +
+                       open("CHANGES.rst").read(),
       classifiers=[
         "Programming Language :: Python",
         ],
