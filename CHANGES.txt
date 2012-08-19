@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.2.8 (unreleased)
+1.2.8 (2012-08-19)
 ------------------
 
-- Nothing changed yet.
+- Add missing dependency to z3c.recipe.scripts
+  [ggozad]
 
 
 1.2.7 (2012-08-19)
