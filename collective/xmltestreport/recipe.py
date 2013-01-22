@@ -105,6 +105,7 @@ class TestRunner:
                             for p in test_paths)
                     +'        ]'),
             script_initialization=initialization,
+            initialization=initialization,
             ))
 
         return generated
