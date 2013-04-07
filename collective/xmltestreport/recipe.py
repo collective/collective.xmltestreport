@@ -16,11 +16,11 @@
 
 import os
 import os.path
-import pkg_resources
-import sys
-import zc.buildout.easy_install
 
-import z3c.recipe.scripts.scripts
+import pkg_resources
+import zc.buildout.easy_install
+import zc.recipe.egg
+
 
 class TestRunner:
 
@@ -28,23 +28,19 @@ class TestRunner:
         self.buildout = buildout
         self.name = name
         self.options = options
-        # We do this early so the "extends" functionality works before we get
-        # to the other options below.
-        self._delegated = z3c.recipe.scripts.scripts.Base(
-            buildout, name, options)
-
         options['script'] = os.path.join(buildout['buildout']['bin-directory'],
                                          options.get('script', self.name),
                                          )
         if not options.get('working-directory', ''):
             options['location'] = os.path.join(
-                buildout['buildout']['parts-directory'], name,
-                'working-directory')
+                buildout['buildout']['parts-directory'], name)
+        self.egg = zc.recipe.egg.Egg(buildout, name, options)
 
     def install(self):
         options = self.options
-        generated = []
-        eggs, ws = self._delegated.working_set(('collective.xmltestreport', ))
+        dest = []
+        eggs, ws = self.egg.working_set(
+            ('zope.testing', 'zope.testrunner', 'collective.xmltestreport', ))
 
         test_paths = [ws.find(pkg_resources.Requirement.parse(spec)).location
                       for spec in eggs]
@@ -53,27 +49,19 @@ class TestRunner:
         if defaults:
             defaults = '(%s) + ' % defaults
 
-        if not os.path.exists(options['parts-directory']):
-            os.mkdir(options['parts-directory'])
-            generated.append(options['parts-directory'])
-        site_py_dest = os.path.join(options['parts-directory'],
-                                    'site-packages')
-        if not os.path.exists(site_py_dest):
-            os.mkdir(site_py_dest)
-            generated.append(site_py_dest)
         wd = options.get('working-directory', '')
         if not wd:
             wd = options['location']
             if os.path.exists(wd):
                 assert os.path.isdir(wd)
             else:
-                os.mkdir(wd) # makedirs
-                generated.append(wd)
+                os.mkdir(wd)
+            dest.append(wd)
         wd = os.path.abspath(wd)
 
-        if self._delegated._relative_paths:
-            wd = _relativize(self._delegated._relative_paths, wd)
-            test_paths = [_relativize(self._delegated._relative_paths, p)
+        if self.egg._relative_paths:
+            wd = _relativize(self.egg._relative_paths, wd)
+            test_paths = [_relativize(self.egg._relative_paths, p)
                           for p in test_paths]
         else:
             wd = repr(wd)
@@ -91,23 +79,21 @@ class TestRunner:
         if initialization_section:
             initialization += initialization_section
 
-        generated.extend(zc.buildout.easy_install.sitepackage_safe_scripts(
-            self.buildout['buildout']['bin-directory'], ws,
-            options['executable'], site_py_dest,
-            reqs=[(options['script'], 'collective.xmltestreport.runner', 'run')],
-            extra_paths=self._delegated.extra_paths,
-            include_site_packages=self._delegated.include_site_packages,
-            exec_sitecustomize=self._delegated.exec_sitecustomize,
-            relative_paths=self._delegated._relative_paths,
-            script_arguments=defaults + (
+        dest.extend(zc.buildout.easy_install.scripts(
+            [(options['script'], 'collective.xmltestreport.runner', 'run')],
+            ws, options['executable'],
+            self.buildout['buildout']['bin-directory'],
+            extra_paths=self.egg.extra_paths,
+            arguments = defaults + (
                     '[\n'+
                     ''.join(("        '--test-path', %s,\n" % p)
                             for p in test_paths)
                     +'        ]'),
-            script_initialization=initialization,
+            initialization = initialization,
+            relative_paths = self.egg._relative_paths,
             ))
 
-        return generated
+        return dest
 
     update = install
 
@@ -123,16 +109,11 @@ os.chdir(%s)
 env_template = """os.environ['%s'] = %r
 """
 
+
 def _relativize(base, path):
     base += os.path.sep
-    if sys.platform == 'win32':
-        #windoze paths are case insensitive, but startswith is not
-        base = base.lower()
-        path = path.lower()
-
     if path.startswith(base):
         path = 'join(base, %r)' % path[len(base):]
     else:
         path = repr(path)
     return path
-
