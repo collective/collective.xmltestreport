@@ -1,10 +1,14 @@
 Changelog
 =========
 
-1.2.9 (unreleased)
+1.3.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Revert "Exclude system site-packages from tests' sys.path". This commit
+  changed the API/output of collective.xmltestreport in a minor version without
+  mentioning. This essentially broke all Jenkins jobs out there including all
+  Plone coredev jobs and all the packages/code that relies on that output.
+  [timo]
 
 
 1.2.8 (2012-08-19)
