@@ -23,6 +23,11 @@ Code repository
 
 https://github.com/collective/collective.xmltestreport
 
+.. |travisci| image::  https://travis-ci.org/lugensa/collective.xmltestreport.png
+.. _travisci: https://travis-ci.org/lugensa/collective.xmltestreport
+
+|travisci|_
+
 Usage
 =====
 
