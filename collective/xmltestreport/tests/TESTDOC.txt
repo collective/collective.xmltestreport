@@ -52,10 +52,7 @@ Setup the testrunner:
 
 Ok, let's run the buildout:
 
-    >>> print system(buildout)
-    Develop: ...sample-buildout/demo...
-    Installing test...
-    Generated script ...sample-buildout/bin/test...
+    >>> installed = system(buildout)
 
 Check if the run script is here and the template substitution worked:
 

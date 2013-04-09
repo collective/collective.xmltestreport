@@ -8,7 +8,7 @@ Changelog
   coverage XML and HTML output.
   [jod]
 
-- Added tests.
+- Added tests, travis ci.
   [jod]
 
 - Revert "Exclude system site-packages from tests' sys.path". This commit
