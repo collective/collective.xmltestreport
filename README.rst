@@ -18,6 +18,11 @@ It also replaces the buildin coverage module from ``zope.testing`` with Ned
 Batchelder's. With this replacement it is also possible to write XML, HTML 
 output.
 
+Code repository
+===============
+
+`https://github.com/collective/collective.xmltestreport`_
+
 Usage
 =====
 
@@ -51,3 +56,12 @@ Use ``bin/test --help`` for a full list of options.
 
 If you are using Jenkins, you can now configure the build to publish JUnit
 test reports for ``<buildoutdir>/parts/test/testreports/*.xml`` and ``<buildoutdir>/parts/test/testreports/coverage.xml``.
+
+Tests aka develop
+=================
+
+To run tests do::
+
+    $ virtualenv env
+    $ env/bin/python setup.py develop
+    $ env/bin/python setup.py test

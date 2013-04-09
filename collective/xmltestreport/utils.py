@@ -44,6 +44,7 @@ def prettyXML(tree):
 #XXX Ugly monkey patch to get it at least working,
 # better ulgy output than no output
 
+
 def patched_write_encoded(fname, text, encoding='utf8', errors='strict'):
     '''Write utf8 string `text` to file names `fname`, with encoding.'''
     import codecs
@@ -57,12 +58,14 @@ def patched_write_encoded(fname, text, encoding='utf8', errors='strict'):
     finally:
         f.close()
 
+
 def write_html(self, fname, html):
     """Write `html` to `fname`, properly encoded."""
-    patched_write_encoded(fname, html, 'ascii', 'xmlcharrefreplace') 
+    patched_write_encoded(fname, html, 'ascii', 'xmlcharrefreplace')
 
 import coverage.html
 coverage.html.HtmlReporter.write_html = write_html
+
 
 def _escape_cdata(text, encoding):
     # escape character data
@@ -84,4 +87,3 @@ def _escape_cdata(text, encoding):
         return text.decode("utf-8").encode(encoding, "xmlcharrefreplace")
 
 ElementTree._escape_cdata = _escape_cdata
-

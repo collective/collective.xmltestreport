@@ -1,0 +1,103 @@
+Test recipe
+===========
+
+Testing recipe
+--------------
+
+Setup:
+
+    >>> import os
+
+We'll create a projects in our sample buildout:
+
+    >>> mkdir(sample_buildout, 'demo')
+    >>> mkdir(sample_buildout, 'demo', 'demo')
+    >>> write(sample_buildout, 'demo', 'demo', '__init__.py', 'a="foo"')
+    >>> write(sample_buildout, 'demo', 'demo', 'tests.py',
+    ... '''
+    ... import unittest
+    ...
+    ... class TestDemo(unittest.TestCase):
+    ...    def test(self):
+    ...        pass
+    ...
+    ... def test_suite():
+    ...     return unittest.makeSuite(TestDemo)
+    ... ''')
+
+    >>> write(sample_buildout, 'demo', 'setup.py',
+    ... """
+    ... from setuptools import setup
+    ...
+    ... setup(name="demo")
+    ... """)
+
+    >>> write(sample_buildout, 'demo', 'README.txt', '')
+
+Setup the testrunner:
+
+    >>> write(sample_buildout, 'buildout.cfg',
+    ... """
+    ... [buildout]
+    ... develop = demo
+    ... parts = test
+    ...
+    ... [test]
+    ... recipe = collective.xmltestreport
+    ... eggs =
+    ...    demo
+    ... defaults = ['--auto-color', '--auto-progress', '--coverage-xml',
+    ...     '--coverage-branch']
+    ... """)
+
+Ok, let's run the buildout:
+
+    >>> print system(buildout)
+    Develop: ...sample-buildout/demo...
+    Installing test...
+    Generated script ...sample-buildout/bin/test...
+
+Check if the run script is here and the template substitution worked:
+
+    >>> cat(sample_buildout, 'bin', 'test')
+    #!...
+    import sys
+    sys.path[0:0] =
+    ...
+    if __name__ == '__main__':
+        sys.exit(collective.xmltestreport.runner.run((['--auto-color', '--auto-progress', '--coverage-xml', '--coverage-branch']) + [
+            '--test-path', '...demo...',
+            ]))
+
+    >>> ls(sample_buildout, 'bin')
+    -  buildout
+    -  test
+
+Let try to run the script:
+
+    >>> print system(os.path.join(sample_buildout, 'bin', 'test') + ' -vv --xml --coverage-module demo')
+    Running tests at level 1
+    Running zope.testrunner.layer.UnitTests tests:
+      Set up zope.testrunner.layer.UnitTests in 0.000 seconds.
+      Running:
+     test (demo.tests.TestDemo)
+      Ran 1 tests with 0 failures and 0 errors in 0.000 seconds.
+    Tearing down left over layers:
+      Tear down zope.testrunner.layer.UnitTests in 0.000 seconds.
+    <BLANKLINE>
+    Coverage report
+    ===============
+    <BLANKLINE>
+    Name         Stmts   Miss Branch BrMiss  Cover   Missing
+    --------------------------------------------------------
+    demo             1      0      0      0   100%   
+    demo.tests       6      0      0      0   100%   
+    --------------------------------------------------------
+    TOTAL            7      0      0      0   100%   
+    <BLANKLINE>
+
+There should be a testreports folder:
+
+    >>> ls(sample_buildout, 'testreports')
+    -  coverage.xml
+    -  demo.tests.TestDemo.xml

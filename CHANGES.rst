@@ -1,11 +1,50 @@
 Changelog
 =========
 
-1.2.5 (unreleased)
+1.3.0 (unreleased)
 ------------------
 
 - Added options to use Ned Batchelder coverage module to produce 
   coverage XML and HTML output.
+  [jod]
+
+- Added tests.
+  [jod]
+
+- Revert "Exclude system site-packages from tests' sys.path". This commit
+  changed the API/output of collective.xmltestreport in a minor version without
+  mentioning. This essentially broke all Jenkins jobs out there including all
+  Plone coredev jobs and all the packages/code that relies on that output.
+  [timo]
+
+
+1.2.8 (2012-08-19)
+------------------
+
+- Add missing dependency to z3c.recipe.scripts
+  [ggozad]
+
+
+1.2.7 (2012-08-19)
+------------------
+
+- Exclude system site-packages from tests' sys.path'
+  [Andrey Lebedev]
+
+
+1.2.6 (2012-06-06)
+------------------
+
+- Fix import errors problem (TypeError) introduced in 1.2.5.
+  [jone]
+
+
+1.2.5 (2012-06-06)
+------------------
+
+- Handle startup failures (import errors) and expose them in the testresults.
+  [jone]
+
 
 1.2.4 (2011-12-04)
 ------------------

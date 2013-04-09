@@ -6,6 +6,8 @@ import socket
 import sys
 import traceback
 
+from zope.testrunner.find import StartUpFailure
+
 try:
     # Python >= 2.5
     from xml.etree import ElementTree
@@ -50,6 +52,7 @@ class TestCaseInfo(object):
         self.failure = failure
         self.error = error
 
+
 def get_test_class_name(test):
     """Compute the test class name from the test object."""
     return "%s.%s" % (test.__module__, test.__class__.__name__, )
@@ -60,10 +63,11 @@ def filename_to_suite_name_parts(filename):
     filepath = os.path.realpath(filename)
     filedir = os.path.dirname(filepath)
     filename = os.path.basename(filepath)
-    mod = [module for name, module in sys.modules.items() if "%s/__init__" % filedir in str(module)]
+    mod = [module for name, module in sys.modules.items()
+           if "%s/__init__" % filedir in str(module)]
     if len(mod) > 0:
         suiteName = mod[0].__name__
-	return [suiteName]
+    return [suiteName]
 
     # XXX is this code still needed!?
     # lop off whatever portion of the path we have in common
@@ -130,6 +134,13 @@ def parse_manuel(test):
     return testSuite, testName, testClassName
 
 
+def parse_startup_failure(test):
+    if not isinstance(test, StartUpFailure):
+        return None, None, None
+    testModuleName = test.module
+    return testModuleName, 'Startup', testModuleName
+
+
 def parse_unittest(test):
     testId = test.id()
     if testId is None:
@@ -147,10 +158,11 @@ class XMLOutputFormattingWrapper(object):
 
     def __init__(self, options):
         self.delegate = options.output
-        self._testSuites = {} # test class -> list of test names
+        # test class -> list of test names
+        self._testSuites = {}
         self.testresult_dir = os.getcwd()
         if options.testresult_dir:
-            self.testresult_dir = options.testresult_dir 
+            self.testresult_dir = options.testresult_dir
 
     def __getattr__(self, name):
         return getattr(self.delegate, name)
@@ -167,6 +179,12 @@ class XMLOutputFormattingWrapper(object):
         self._record(test, seconds)
         return self.delegate.test_success(test, seconds)
 
+    def import_errors(self, import_errors):
+        if import_errors:
+            for test in import_errors:
+                self._record(test, 0, error=test.exc_info)
+        return self.delegate.import_errors(import_errors)
+
     def _record(self, test, seconds, failure=None, error=None):
         try:
             os.getcwd()
@@ -178,6 +196,7 @@ class XMLOutputFormattingWrapper(object):
         for parser in [parse_doc_file_case,
                        parse_doc_test_case,
                        parse_manuel,
+                       parse_startup_failure,
                        parse_unittest]:
             testSuite, testName, testClassName = parser(test)
             if (testSuite, testName, testClassName) != (None, None, None):
@@ -250,7 +269,8 @@ class XMLOutputFormattingWrapper(object):
                         excType, excInstance, tb = testCase.error
                         errorMessage = str(excInstance)
                         stackTrace = ''.join(traceback.format_tb(tb))
-                    finally: # Avoids a memory leak
+                    finally:
+                        # Avoids a memory leak
                         del tb
 
                     errorNode.set('message', errorMessage.split('\n')[0])
@@ -266,7 +286,8 @@ class XMLOutputFormattingWrapper(object):
                         excType, excInstance, tb = testCase.failure
                         errorMessage = str(excInstance)
                         stackTrace = ''.join(traceback.format_tb(tb))
-                    finally: # Avoids a memory leak
+                    finally:
+                        # Avoids a memory leak
                         del tb
 
                     failureNode.set('message', errorMessage.split('\n')[0])
