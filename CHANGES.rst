@@ -4,6 +4,13 @@ Changelog
 1.3.0 (unreleased)
 ------------------
 
+- Added options to use Ned Batchelder coverage module to produce 
+  coverage XML and HTML output.
+  [jod]
+
+- Added tests, travis ci.
+  [jod]
+
 - Revert "Exclude system site-packages from tests' sys.path". This commit
   changed the API/output of collective.xmltestreport in a minor version without
   mentioning. This essentially broke all Jenkins jobs out there including all

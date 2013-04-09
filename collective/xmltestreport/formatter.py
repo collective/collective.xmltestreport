@@ -3,6 +3,7 @@ import doctest
 import os
 import os.path
 import socket
+import sys
 import traceback
 
 from zope.testrunner.find import StartUpFailure
@@ -51,15 +52,28 @@ class TestCaseInfo(object):
         self.failure = failure
         self.error = error
 
+
 def get_test_class_name(test):
     """Compute the test class name from the test object."""
     return "%s.%s" % (test.__module__, test.__class__.__name__, )
 
 
 def filename_to_suite_name_parts(filename):
+    #the module is loaded so we try to get name from sys.modules
+    filepath = os.path.realpath(filename)
+    filedir = os.path.dirname(filepath)
+    filename = os.path.basename(filepath)
+    mod = [module for name, module in sys.modules.items()
+           if "%s/__init__" % filedir in str(module)]
+    if len(mod) > 0:
+        suiteName = mod[0].__name__
+    return [suiteName]
+
+    # XXX is this code still needed!?
     # lop off whatever portion of the path we have in common
     # with the current working directory; crude, but about as
     # much as we can do :(
+
     filenameParts = filename.split(os.path.sep)
     cwdParts = os.getcwd().split(os.path.sep)
     longest = min(len(filenameParts), len(cwdParts))
@@ -82,6 +96,8 @@ def filename_to_suite_name_parts(filename):
         # don't lose the filename, which would have a . in it
         suiteNameParts.append(filenameParts[-1])
         return suiteNameParts
+    # ok too hard we cant find anything but at least we return something
+    return ['unknown']
 
 
 def parse_doc_file_case(test):
@@ -140,10 +156,13 @@ class XMLOutputFormattingWrapper(object):
     operations, but also prepares an element tree of test output.
     """
 
-    def __init__(self, delegate, cwd):
-        self.delegate = delegate
-        self._testSuites = {} # test class -> list of test names
-        self.cwd = cwd
+    def __init__(self, options):
+        self.delegate = options.output
+        # test class -> list of test names
+        self._testSuites = {}
+        self.testresult_dir = os.getcwd()
+        if options.testresult_dir:
+            self.testresult_dir = options.testresult_dir
 
     def __getattr__(self, name):
         return getattr(self.delegate, name)
@@ -172,7 +191,7 @@ class XMLOutputFormattingWrapper(object):
         except OSError:
             # In case the current directory is no longer available fallback to
             # the default working directory.
-            os.chdir(self.cwd)
+            os.chdir(self.testresult_dir)
 
         for parser in [parse_doc_file_case,
                        parse_doc_test_case,
@@ -206,7 +225,7 @@ class XMLOutputFormattingWrapper(object):
         timestamp = datetime.datetime.now().isoformat()
         hostname = socket.gethostname()
 
-        workingDir = os.getcwd()
+        workingDir = self.testresult_dir
         reportsDir = os.path.join(workingDir, 'testreports')
         if not os.path.exists(reportsDir):
             os.mkdir(reportsDir)
@@ -250,7 +269,8 @@ class XMLOutputFormattingWrapper(object):
                         excType, excInstance, tb = testCase.error
                         errorMessage = str(excInstance)
                         stackTrace = ''.join(traceback.format_tb(tb))
-                    finally: # Avoids a memory leak
+                    finally:
+                        # Avoids a memory leak
                         del tb
 
                     errorNode.set('message', errorMessage.split('\n')[0])
@@ -266,7 +286,8 @@ class XMLOutputFormattingWrapper(object):
                         excType, excInstance, tb = testCase.failure
                         errorMessage = str(excInstance)
                         stackTrace = ''.join(traceback.format_tb(tb))
-                    finally: # Avoids a memory leak
+                    finally:
+                        # Avoids a memory leak
                         del tb
 
                     failureNode.set('message', errorMessage.split('\n')[0])
