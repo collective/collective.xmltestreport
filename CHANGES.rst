@@ -42,6 +42,8 @@ Fixes:
 
 1.3.0 (2013-04-29)
 ------------------
+- Added tests, travis ci.
+  [jod]
 
 - Revert "Exclude system site-packages from tests' sys.path". This commit
   changed the API/output of collective.xmltestreport in a minor version without
