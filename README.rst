@@ -13,7 +13,7 @@ integration server.
 Code repository
 ===============
 
-`https://github.com/collective/collective.xmltestreport`_
+https://github.com/collective/collective.xmltestreport
 
 Usage
 =====
