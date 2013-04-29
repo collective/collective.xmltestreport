@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.0 (unreleased)
+1.3.0 (2013-04-29)
 ------------------
 
 - Revert "Exclude system site-packages from tests' sys.path". This commit
