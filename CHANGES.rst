@@ -4,7 +4,9 @@ Changelog
 1.3.1 (unreleased)
 ------------------
 
--
+- Make sure errors in layer teardown don't prevent the test report from
+  getting written.
+  [davisagli]
 
 
 1.3.0 (2013-04-29)

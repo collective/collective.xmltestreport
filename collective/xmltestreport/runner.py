@@ -69,10 +69,11 @@ def run_internal(defaults=None, args=None, script_parts=None):
     """
 
     runner = XMLAwareRunner(defaults, args, script_parts=script_parts)
-    runner.run()
-
-    # Write XML file of results if -x option is given
-    if runner.options.xmlOutput:
-        runner.options.output.writeXMLReports()
+    try:
+        runner.run()
+    finally:
+        # Write XML file of results if -x option is given
+        if runner.options.xmlOutput:
+            runner.options.output.writeXMLReports()
 
     return runner.failed
