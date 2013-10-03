@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.1 (unreleased)
+1.3.1 (2013-10-03)
 ------------------
 
 - Make sure errors in layer teardown don't prevent the test report from
