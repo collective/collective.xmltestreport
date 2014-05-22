@@ -281,5 +281,5 @@ class XMLOutputFormattingWrapper(object):
 
             # Write file
             outputFile = open(filename, 'w')
-            outputFile.write(prettyXML(testSuiteNode))
+            outputFile.write(prettyXML(testSuiteNode).decode('utf-8'))
             outputFile.close()

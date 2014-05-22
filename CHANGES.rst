@@ -4,6 +4,9 @@ Changelog
 1.3.2 (unreleased)
 ------------------
 
+- Fix encoding problem in python 3.
+  [cedricmessiant]
+
 
 1.3.1 (2013-10-03)
 ------------------
