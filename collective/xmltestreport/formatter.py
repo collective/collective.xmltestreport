@@ -266,6 +266,9 @@ class XMLOutputFormattingWrapper(object):
                         excType, excInstance, tb = testCase.failure
                         errorMessage = str(excInstance)
                         stackTrace = ''.join(traceback.format_tb(tb))
+                    except UnicodeEncodeError:
+                        errorMessage = str(excInstance.encode('utf-8'))
+                        stackTrace = ''.join(traceback.format_tb(tb))
                     finally: # Avoids a memory leak
                         del tb
 
