@@ -4,6 +4,9 @@ Changelog
 1.3.2 (unreleased)
 ------------------
 
+- Fix error on utf-8 error string.
+  [bloodbare]
+
 - Fix encoding problem in python 3.
   [cedricmessiant]
 
