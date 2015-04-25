@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.2 (unreleased)
+1.3.2 (2015-04-25)
 ------------------
 
 - Fix error on utf-8 error string.
