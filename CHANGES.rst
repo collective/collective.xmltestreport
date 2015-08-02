@@ -4,7 +4,10 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Dependecy to z3c.recipe.scripts declared but it was nowhere used.
+  Removed dependency. This make it work with newer zc.builodut again.
+  Fixes #10
+  [jensens]
 
 
 1.3.2 (2015-04-25)
