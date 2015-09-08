@@ -4,8 +4,8 @@ Changelog
 1.3.3 (unreleased)
 ------------------
 
-- Dependecy to z3c.recipe.scripts declared but it was nowhere used.
-  Removed dependency. This make it work with newer zc.builodut again.
+- Dependency to z3c.recipe.scripts declared but it was nowhere used.
+  Removed dependency. This makes it work with newer zc.buildout again.
   Fixes #10
   [jensens]
 
