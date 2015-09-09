@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.3.3 (unreleased)
+1.3.3 (2015-09-09)
 ------------------
 
 - Dependency to z3c.recipe.scripts declared but it was nowhere used.
