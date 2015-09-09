@@ -22,11 +22,13 @@ setup(name='collective.xmltestreport',
       version=version,
       description="A test runner which can output an XML report compatible "
                   "with JUnit and Jenkins",
-      long_description=open("README.rst").read() + "\n" +
-                       open("CHANGES.rst").read(),
+      long_description=(open("README.rst").read() + "\n" +
+                        open("CHANGES.rst").read()),
       classifiers=[
-        "Programming Language :: Python",
-        ],
+          "Programming Language :: Python",
+          "Programming Language :: Python :: 2.6",
+          "Programming Language :: Python :: 2.7",
+          ],
       keywords='jenkins junit xml zope.testing',
       author='Martin Aspeli',
       author_email='plone-developers@lists.sourceforge.net',
