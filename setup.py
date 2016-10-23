@@ -10,14 +10,6 @@ requires = [
     'zc.recipe.egg',
 ]
 
-if sys.version_info < (2, 5):
-    # Starting from Python 2.5, the stdlib ships the `elementtree` package as
-    # `xml.etree`.
-    # So we need this dependency only if we have a too old (before 2.5) version
-    # of Python.
-    requires.append('elementtree')
-
-
 setup(name='collective.xmltestreport',
       version=version,
       description="A test runner which can output an XML report compatible "
@@ -26,8 +18,8 @@ setup(name='collective.xmltestreport',
                         open("CHANGES.rst").read()),
       classifiers=[
           "Programming Language :: Python",
-          "Programming Language :: Python :: 2.6",
           "Programming Language :: Python :: 2.7",
+          "Programming Language :: Python :: 3.5",
           ],
       keywords='jenkins junit xml zope.testing',
       author='Martin Aspeli',
