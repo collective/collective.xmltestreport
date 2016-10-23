@@ -6,7 +6,8 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- Add compatibility with Python 2 and Python 3.
+  [gforcada]
 
 New features:
 

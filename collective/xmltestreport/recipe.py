@@ -65,7 +65,7 @@ class TestRunner:
                           for p in test_paths]
         else:
             wd = repr(wd)
-            test_paths = map(repr, test_paths)
+            test_paths = list(map(repr, test_paths))
 
         initialization = initialization_template % wd
 
