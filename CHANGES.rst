@@ -6,7 +6,9 @@ Changelog
 
 New:
 
-- *add item here*
+- Added options to use Ned Batchelder coverage module to produce 
+  coverage XML and HTML output.
+  [jod]
 
 Fixes:
 

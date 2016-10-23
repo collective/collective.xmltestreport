@@ -78,19 +78,19 @@ Let try to run the script:
       Set up zope.testrunner.layer.UnitTests in 0.000 seconds.
       Running:
      test (demo.tests.TestDemo)
-      Ran 1 tests with 0 failures and 0 errors in 0.000 seconds.
+      Ran 1 tests with 0 failures, 0 errors and 0 skipped in 0.000 seconds.
     Tearing down left over layers:
       Tear down zope.testrunner.layer.UnitTests in 0.000 seconds.
     <BLANKLINE>
     Coverage report
     ===============
     <BLANKLINE>
-    Name         Stmts   Miss Branch BrMiss  Cover   Missing
-    --------------------------------------------------------
-    demo             1      0      0      0   100%   
-    demo.tests       6      0      0      0   100%   
-    --------------------------------------------------------
-    TOTAL            7      0      0      0   100%   
+    Name            Stmts   Miss Branch BrPart  Cover
+    -------------------------------------------------
+    demo.py             1      0      0      0   100%
+    demo/tests.py       6      0      0      0   100%
+    -------------------------------------------------
+    TOTAL               7      0      0      0   100%
     <BLANKLINE>
 
 There should be a testreports folder:

@@ -10,8 +10,8 @@
 # WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
 # FOR A PARTICULAR PURPOSE.
 #
-# Addendum: This recipe merges collective.xmltestreport and 
-# tranchitella.recipe.testrunner 
+# Addendum: This recipe merges collective.xmltestreport and
+# tranchitella.recipe.testrunner
 #
 ##############################################################################
 """A recipe based on zc.recipe.testrunner
@@ -25,7 +25,7 @@ import zc.buildout.easy_install
 import zc.recipe.egg
 
 
-class TestRunner:
+class TestRunner(object):
 
     def __init__(self, buildout, name, options):
         self.buildout = buildout
@@ -42,8 +42,12 @@ class TestRunner:
     def install(self):
         options = self.options
         dest = []
-        eggs, ws = self.egg.working_set(('zope.testing', 'zope.testrunner', 
-            'collective.xmltestreport', 'coverage', ))
+        eggs, ws = self.egg.working_set((
+            'zope.testing',
+            'zope.testrunner',
+            'collective.xmltestreport',
+            'coverage',
+        ))
 
         test_paths = [ws.find(pkg_resources.Requirement.parse(spec)).location
                       for spec in eggs]
@@ -85,14 +89,13 @@ class TestRunner:
             ws, options['executable'],
             self.buildout['buildout']['bin-directory'],
             extra_paths=self.egg.extra_paths,
-            arguments = defaults + (
-                    '[\n'+
-                    ''.join(("        '--test-path', %s,\n" % p)
-                            for p in test_paths)
-                    +'        ]'),
-            initialization = initialization,
-            relative_paths = self.egg._relative_paths,
-            ))
+            arguments=defaults + (
+                '[\n' + ''.join(("        '--test-path', %s,\n" % p)
+                                for p in test_paths)
+                + '        ]'),
+            initialization=initialization,
+            relative_paths=self.egg._relative_paths,
+        ))
 
         return dest
 

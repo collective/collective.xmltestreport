@@ -52,6 +52,7 @@ class TestCaseInfo(object):
         self.failure = failure
         self.error = error
 
+
 def get_test_class_name(test):
     """Compute the test class name from the test object."""
     return "%s.%s" % (test.__module__, test.__class__.__name__, )
@@ -62,10 +63,11 @@ def filename_to_suite_name_parts(filename):
     filepath = os.path.realpath(filename)
     filedir = os.path.dirname(filepath)
     filename = os.path.basename(filepath)
-    mod = [module for name, module in sys.modules.items() if "%s/__init__" % filedir in str(module)]
+    mod = [module for name, module in sys.modules.items()
+           if "%s/__init__" % filedir in str(module)]
     if len(mod) > 0:
         suiteName = mod[0].__name__
-	return [suiteName]
+    return [suiteName]
 
     # XXX is this code still needed!?
     # lop off whatever portion of the path we have in common
@@ -156,10 +158,11 @@ class XMLOutputFormattingWrapper(object):
 
     def __init__(self, options):
         self.delegate = options.output
-        self._testSuites = {} # test class -> list of test names
+        # test class -> list of test names
+        self._testSuites = {}
         self.testresult_dir = os.getcwd()
         if options.testresult_dir:
-            self.testresult_dir = options.testresult_dir 
+            self.testresult_dir = options.testresult_dir
 
     def __getattr__(self, name):
         return getattr(self.delegate, name)
@@ -266,7 +269,8 @@ class XMLOutputFormattingWrapper(object):
                         excType, excInstance, tb = testCase.error
                         errorMessage = str(excInstance)
                         stackTrace = ''.join(traceback.format_tb(tb))
-                    finally: # Avoids a memory leak
+                    finally:
+                        # Avoids a memory leak
                         del tb
 
                     errorNode.set('message', errorMessage.split('\n')[0])
@@ -285,7 +289,8 @@ class XMLOutputFormattingWrapper(object):
                     except UnicodeEncodeError:
                         errorMessage = 'Could not extract error str for unicode error'
                         stackTrace = ''.join(traceback.format_tb(tb))
-                    finally: # Avoids a memory leak
+                    finally:
+                        # Avoids a memory leak
                         del tb
 
                     failureNode.set('message', errorMessage.split('\n')[0])
