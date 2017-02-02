@@ -10,7 +10,9 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fixed UnicodeDecodeError when error message contains non-ascii.
+  Fixes https://github.com/collective/collective.xmltestreport/issues/16
+  [maurits]
 
 
 1.3.3 (2015-09-09)

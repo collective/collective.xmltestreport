@@ -255,7 +255,10 @@ class XMLOutputFormattingWrapper(object):
 
                     errorNode.set('message', errorMessage.split('\n')[0])
                     errorNode.set('type', str(excType))
-                    errorNode.text = errorMessage + '\n\n' + stackTrace
+                    # We need to decode here (and maybe elsewhere),
+                    # because prettyXML will try to encode it in _escape_cdata using 'us-ascii' as encoding,
+                    # which of course fails for anything that is not ascii.
+                    errorNode.text = (errorMessage + '\n\n' + stackTrace).decode('utf-8')
 
                 if testCase.failure:
 
@@ -274,7 +277,7 @@ class XMLOutputFormattingWrapper(object):
 
                     failureNode.set('message', errorMessage.split('\n')[0])
                     failureNode.set('type', str(excType))
-                    failureNode.text = errorMessage + '\n\n' + stackTrace
+                    failureNode.text = (errorMessage + '\n\n' + stackTrace).decode('utf-8')
 
             # XXX: We don't have a good way to capture these yet
             systemOutNode = ElementTree.Element('system-out')
