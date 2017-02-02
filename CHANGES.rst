@@ -4,10 +4,6 @@ Changelog
 1.3.4 (unreleased)
 ------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Fixed UnicodeDecodeError when error message contains non-ascii.
