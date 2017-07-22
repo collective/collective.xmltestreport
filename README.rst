@@ -23,8 +23,8 @@ Code repository
 
 https://github.com/collective/collective.xmltestreport
 
-.. |travisci| image::  https://travis-ci.org/lugensa/collective.xmltestreport.png
-.. _travisci: https://travis-ci.org/lugensa/collective.xmltestreport
+.. |travisci| image::  https://travis-ci.org/collective/collective.xmltestreport.png
+.. _travisci: https://travis-ci.org/collective/collective.xmltestreport
 
 |travisci|_
 
