@@ -14,7 +14,7 @@ capable of writing test reports in the XML format output by JUnit/Ant. This
 allows the test results to be analysed by tools such as the Jenkins continuous
 integration server.
 
-It also replaces the buildin coverage module from ``zope.testing`` with Ned 
+It also replaces the builtin coverage module from ``zope.testing`` with Ned 
 Batchelder's. With this replacement it is also possible to write XML, HTML 
 output.
 
