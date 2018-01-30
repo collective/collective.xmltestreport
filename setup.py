@@ -25,6 +25,7 @@ setup(name='collective.xmltestreport',
       long_description=(open("README.rst").read() + "\n" +
                         open("CHANGES.rst").read()),
       classifiers=[
+          "License :: OSI Approved :: Zope Public License",
           "Programming Language :: Python",
           "Programming Language :: Python :: 2.6",
           "Programming Language :: Python :: 2.7",
