@@ -14,7 +14,9 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fixed UnicodeDecodeError when exception message contains non-ascii, the fix in
+  1.3.4 only covered failures that had this problem.
+  [MatthewWilkes]
 
 
 1.3.4 (2017-02-02)
