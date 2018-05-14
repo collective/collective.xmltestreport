@@ -2,6 +2,7 @@ import datetime
 import doctest
 import os
 import os.path
+import six
 import socket
 import traceback
 
@@ -258,7 +259,10 @@ class XMLOutputFormattingWrapper(object):
                     # We need to decode here (and maybe elsewhere),
                     # because prettyXML will try to encode it in _escape_cdata using 'us-ascii' as encoding,
                     # which of course fails for anything that is not ascii.
-                    errorNode.text = (errorMessage + '\n\n' + stackTrace).decode('utf-8')
+                    text = (errorMessage + '\n\n' + stackTrace)
+                    if six.PY2:
+                        text = text.decode('utf-8')
+                    errorNode.text = text
 
                 if testCase.failure:
 
