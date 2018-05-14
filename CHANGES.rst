@@ -11,7 +11,8 @@ Breaking changes:
 
 New features:
 
-- *add item here*
+- Add compatibility with Python 2 and Python 3.
+  [gforcada]
 
 Bug fixes:
 
