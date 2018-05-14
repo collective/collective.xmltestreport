@@ -281,7 +281,10 @@ class XMLOutputFormattingWrapper(object):
 
                     failureNode.set('message', errorMessage.split('\n')[0])
                     failureNode.set('type', str(excType))
-                    failureNode.text = (errorMessage + '\n\n' + stackTrace).decode('utf-8')
+                    text = errorMessage + '\n\n' + stackTrace
+                    if six.PY2:
+                        text = text.decode('utf-8')
+                    failureNode.text = text
 
             # XXX: We don't have a good way to capture these yet
             systemOutNode = ElementTree.Element('system-out')
