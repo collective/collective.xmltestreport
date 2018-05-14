@@ -5,6 +5,7 @@ version = '1.3.5.dev0'
 
 requires = [
     'setuptools',
+    'six',
     'zope.testing',
     'zope.testrunner',
     'zc.recipe.egg',
