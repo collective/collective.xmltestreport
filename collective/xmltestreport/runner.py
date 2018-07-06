@@ -12,7 +12,7 @@
 #
 ##############################################################################
 """Test runner based on zope.testing.testrunner
-"""
+    """
 import os
 import sys
 import optparse
@@ -28,47 +28,53 @@ except ImportError:
 from collective.xmltestreport.formatter import XMLOutputFormattingWrapper
 
 # Set up XML output parsing
-
-xmlOptions = optparse.OptionGroup(parser, "Generate XML test reports",
-    "Support for JUnit style XML output")
-xmlOptions.add_option(
-    '--xml', action="store_true", dest='xmlOutput',
-    help="""\
-If given, XML reports will be written to the current directory. If you created
-the testrunner using the buildout recipe provided by this package, this will
-be in the buildout `parts` directroy, e.g. `parts/test`.
-""")
-parser.add_option_group(xmlOptions)
+try:
+    xmlOptions = optparse.OptionGroup(parser, "Generate XML test reports",
+                                      "Support for JUnit style XML output")
+                                      xmlOptions.add_option(
+                                                            '--xml', action="store_true", dest='xmlOutput',
+                                                            help="""\
+                                                                If given, XML reports will be written to the current directory. If you created
+                                                                the testrunner using the buildout recipe provided by this package, this will
+                                                                be in the buildout `parts` directroy, e.g. `parts/test`.
+                                                                """)
+                                      parser.add_option_group(xmlOptions)
+except AttributeError:
+    parser.add_argument('--xml', action="store_true", dest='xmlOutput', help="""\
+        If given, XML reports will be written to the current directory. If you created
+        the testrunner using the buildout recipe provided by this package, this will
+        be in the buildout `parts` directroy, e.g. `parts/test`.
+        """)
 
 # Test runner and execution methods
 
 class XMLAwareRunner(Runner):
     """Add output formatter delegate to the test runner before execution
-    """
-
+        """
+    
     def configure(self):
         super(XMLAwareRunner, self).configure()
         self.options.output = XMLOutputFormattingWrapper(self.options.output, cwd=os.getcwd())
 
 
-def run(defaults=None, args=None, script_parts=None):
+def run(defaults=None, args=None, script_parts=None, cwd=None, warnings=None):
     """Main runner function which can be and is being used from main programs.
-
-    Will execute the tests and exit the process according to the test result.
-
-    """
-    failed = run_internal(defaults, args, script_parts=script_parts)
+        
+        Will execute the tests and exit the process according to the test result.
+        
+        """
+    failed = run_internal(defaults, args, script_parts=script_parts, cwd=cwd, warnings=warnings)
     sys.exit(int(failed))
 
 
-def run_internal(defaults=None, args=None, script_parts=None):
+def run_internal(defaults=None, args=None, script_parts=None, cwd=None, warnings=None):
     """Execute tests.
-
-    Returns whether errors or failures occured during testing.
-
-    """
-
-    runner = XMLAwareRunner(defaults, args, script_parts=script_parts)
+        
+        Returns whether errors or failures occured during testing.
+        
+        """
+    
+    runner = XMLAwareRunner(defaults, args, script_parts=script_parts, cwd=cwd, warnings=warnings)
     try:
         runner.run()
     finally:
@@ -76,4 +82,4 @@ def run_internal(defaults=None, args=None, script_parts=None):
         if runner.options.xmlOutput:
             runner.options.output.writeXMLReports()
 
-    return runner.failed
+return runner.failed
