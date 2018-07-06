@@ -28,17 +28,23 @@ except ImportError:
 from collective.xmltestreport.formatter import XMLOutputFormattingWrapper
 
 # Set up XML output parsing
-
-xmlOptions = optparse.OptionGroup(parser, "Generate XML test reports",
-    "Support for JUnit style XML output")
-xmlOptions.add_option(
-    '--xml', action="store_true", dest='xmlOutput',
-    help="""\
-If given, XML reports will be written to the current directory. If you created
-the testrunner using the buildout recipe provided by this package, this will
-be in the buildout `parts` directroy, e.g. `parts/test`.
-""")
-parser.add_option_group(xmlOptions)
+try:
+    xmlOptions = optparse.OptionGroup(parser, "Generate XML test reports",
+        "Support for JUnit style XML output")
+    xmlOptions.add_option(
+        '--xml', action="store_true", dest='xmlOutput',
+        help="""\
+    If given, XML reports will be written to the current directory. If you created
+    the testrunner using the buildout recipe provided by this package, this will
+    be in the buildout `parts` directroy, e.g. `parts/test`.
+    """)
+    parser.add_option_group(xmlOptions)
+except AttributeError:
+    parser.add_argument('--xml', action="store_true", dest='xmlOutput', help="""\
+        If given, XML reports will be written to the current directory. If you created
+        the testrunner using the buildout recipe provided by this package, this will
+        be in the buildout `parts` directroy, e.g. `parts/test`.
+        """)
 
 # Test runner and execution methods
 
