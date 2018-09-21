@@ -1,5 +1,4 @@
 from setuptools import setup, find_packages
-import sys
 
 version = '1.3.5.dev0'
 
@@ -22,6 +21,8 @@ setup(name='collective.xmltestreport',
           "Programming Language :: Python",
           "Programming Language :: Python :: 2.7",
           "Programming Language :: Python :: 3.5",
+          "Programming Language :: Python :: 3.6",
+          "Programming Language :: Python :: 3.7",
           ],
       keywords='jenkins junit xml zope.testing',
       author='Martin Aspeli',

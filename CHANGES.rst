@@ -9,6 +9,9 @@ Breaking changes:
 - Add compatibility with Python 2 and Python 3.
   [gforcada]
 
+- Switch from optparse to argparse to work with zope.testrunner >= 4.9.0
+  [pbauer]
+
 New features:
 
 - *add item here*

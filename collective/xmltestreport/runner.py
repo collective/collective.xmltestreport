@@ -15,32 +15,35 @@
 """
 import os
 import sys
-import optparse
 
-try:
-    from zope.testrunner.runner import Runner
-    from zope.testrunner.options import parser
-except ImportError:
-    from zope.testing.testrunner.runner import Runner
-    from zope.testing.testrunner.options import parser
-
+from zope.testrunner.runner import Runner
+from zope.testrunner.options import parser
 
 from collective.xmltestreport.formatter import XMLOutputFormattingWrapper
 
-# Set up XML output parsing
-
-xmlOptions = optparse.OptionGroup(parser, "Generate XML test reports",
-    "Support for JUnit style XML output")
-xmlOptions.add_option(
-    '--xml', action="store_true", dest='xmlOutput',
-    help="""\
+help = """\
 If given, XML reports will be written to the current directory. If you created
 the testrunner using the buildout recipe provided by this package, this will
 be in the buildout `parts` directroy, e.g. `parts/test`.
-""")
-parser.add_option_group(xmlOptions)
+"""
+
+try:
+    group = parser.add_argument_group(
+        'Generate XML test reports',
+        'Support for JUnit style XML output')
+    group.add_argument(
+        '--xml', dest='xmlOutput', action='store_true', help=help)
+
+except AttributeError:
+    # bbb: zope.testrunner < 4.9.0 uses optparse
+    group = parser.add_option_group(
+        'Generate XML test reports',
+        'Support for JUnit style XML output')
+    group.add_option(
+        '--xml', dest='xmlOutput', action='store_true', help=help)
 
 # Test runner and execution methods
+
 
 class XMLAwareRunner(Runner):
     """Add output formatter delegate to the test runner before execution
@@ -48,7 +51,8 @@ class XMLAwareRunner(Runner):
 
     def configure(self):
         super(XMLAwareRunner, self).configure()
-        self.options.output = XMLOutputFormattingWrapper(self.options.output, cwd=os.getcwd())
+        self.options.output = XMLOutputFormattingWrapper(
+            self.options.output, cwd=os.getcwd())
 
 
 def run(defaults=None, args=None, script_parts=None):
@@ -73,7 +77,7 @@ def run_internal(defaults=None, args=None, script_parts=None):
         runner.run()
     finally:
         # Write XML file of results if -x option is given
-        if runner.options.xmlOutput:
+        if runner.options and runner.options.xmlOutput:
             runner.options.output.writeXMLReports()
 
     return runner.failed
