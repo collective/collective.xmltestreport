@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 # Copyright (c) 2006 Zope Corporation and Contributors.
@@ -16,7 +17,6 @@
 
 import os
 import os.path
-
 import pkg_resources
 import zc.buildout.easy_install
 import zc.recipe.egg
@@ -47,7 +47,7 @@ class TestRunner:
 
         defaults = options.get('defaults', '').strip()
         if defaults:
-            defaults = '(%s) + ' % defaults
+            defaults = '({0}) + '.format(defaults)
 
         wd = options.get('working-directory', '')
         if not wd:
@@ -67,13 +67,13 @@ class TestRunner:
             wd = repr(wd)
             test_paths = map(repr, test_paths)
 
-        initialization = initialization_template % wd
+        initialization = initialization_template.format(wd)
 
         env_section = options.get('environment', '').strip()
         if env_section:
             env = self.buildout[env_section]
             for key, value in env.items():
-                initialization += env_template % (key, value)
+                initialization += env_template.format(key, value)
 
         initialization_section = options.get('initialization', '').strip()
         if initialization_section:
@@ -84,18 +84,19 @@ class TestRunner:
             ws, options['executable'],
             self.buildout['buildout']['bin-directory'],
             extra_paths=self.egg.extra_paths,
-            arguments = defaults + (
-                    '[\n'+
-                    ''.join(("        '--test-path', %s,\n" % p)
-                            for p in test_paths)
-                    +'        ]'),
-            initialization = initialization,
-            relative_paths = self.egg._relative_paths,
-            ))
+            arguments=defaults + (
+                '[\n' +
+                ''.join(("        '--test-path', {0},\n".format(p))
+                        for p in test_paths)
+                + '        ]'),
+            initialization=initialization,
+            relative_paths=self.egg._relative_paths,
+        ))
 
         return dest
 
     update = install
+
 
 arg_template = """[
   '--test-path', %(TESTPATH)s,
@@ -103,17 +104,17 @@ arg_template = """[
 
 initialization_template = """import os
 sys.argv[0] = os.path.abspath(sys.argv[0])
-os.chdir(%s)
+os.chdir({0})
 """
 
-env_template = """os.environ['%s'] = %r
+env_template = """os.environ['{0}'] = {0!r}
 """
 
 
 def _relativize(base, path):
     base += os.path.sep
     if path.startswith(base):
-        path = 'join(base, %r)' % path[len(base):]
+        path = 'join(base, {0!r})'.format(path[len(base):])
     else:
         path = repr(path)
     return path

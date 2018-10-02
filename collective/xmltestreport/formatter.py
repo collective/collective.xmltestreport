@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+from collective.xmltestreport.utils import prettyXML
+from xml.etree import ElementTree
+from zope.testrunner.find import StartUpFailure
+
 import datetime
 import doctest
 import os
@@ -5,16 +10,6 @@ import os.path
 import socket
 import traceback
 
-from zope.testrunner.find import StartUpFailure
-
-try:
-    # Python >= 2.5
-    from xml.etree import ElementTree
-except ImportError:
-    # Python < 2.5
-    from elementtree import ElementTree
-
-from collective.xmltestreport.utils import prettyXML
 
 try:
     import manuel.testing
@@ -51,9 +46,10 @@ class TestCaseInfo(object):
         self.failure = failure
         self.error = error
 
+
 def get_test_class_name(test):
     """Compute the test class name from the test object."""
-    return "%s.%s" % (test.__module__, test.__class__.__name__, )
+    return '{0}.{1}'.format(test.__module__, test.__class__.__name__, )
 
 
 def filename_to_suite_name_parts(filename):
@@ -142,7 +138,7 @@ class XMLOutputFormattingWrapper(object):
 
     def __init__(self, delegate, cwd):
         self.delegate = delegate
-        self._testSuites = {} # test class -> list of test names
+        self._testSuites = {}  # test class -> list of test names
         self.cwd = cwd
 
     def __getattr__(self, name):
@@ -185,8 +181,9 @@ class XMLOutputFormattingWrapper(object):
 
         if (testSuite, testName, testClassName) == (None, None, None):
             raise TypeError(
-                "Unknown test type: Could not compute testSuite, testName, "
-                "testClassName: %r" % test)
+                'Unknown test type: Could not compute testSuite, testName, '
+                'testClassName: {0!r}'.format(test),
+            )
 
         suite = self._testSuites.setdefault(testSuite, TestSuiteInfo())
         suite.testCases.append(TestCaseInfo(
@@ -250,15 +247,17 @@ class XMLOutputFormattingWrapper(object):
                         excType, excInstance, tb = testCase.error
                         errorMessage = str(excInstance)
                         stackTrace = ''.join(traceback.format_tb(tb))
-                    finally: # Avoids a memory leak
+                    finally:  # Avoids a memory leak
                         del tb
 
                     errorNode.set('message', errorMessage.split('\n')[0])
                     errorNode.set('type', str(excType))
                     # We need to decode here (and maybe elsewhere),
-                    # because prettyXML will try to encode it in _escape_cdata using 'us-ascii' as encoding,
+                    # because prettyXML will try to encode it in
+                    # _escape_cdata using 'us-ascii' as encoding,
                     # which of course fails for anything that is not ascii.
-                    errorNode.text = (errorMessage + '\n\n' + stackTrace).decode('utf-8')
+                    errorNode.text = (errorMessage + '\n\n' +
+                                      stackTrace).decode('utf-8')
 
                 if testCase.failure:
 
@@ -270,14 +269,16 @@ class XMLOutputFormattingWrapper(object):
                         errorMessage = str(excInstance)
                         stackTrace = ''.join(traceback.format_tb(tb))
                     except UnicodeEncodeError:
-                        errorMessage = 'Could not extract error str for unicode error'
+                        errorMessage = 'Could not extract error str ' \
+                            'for unicode error'
                         stackTrace = ''.join(traceback.format_tb(tb))
-                    finally: # Avoids a memory leak
+                    finally:  # Avoids a memory leak
                         del tb
 
                     failureNode.set('message', errorMessage.split('\n')[0])
                     failureNode.set('type', str(excType))
-                    failureNode.text = (errorMessage + '\n\n' + stackTrace).decode('utf-8')
+                    failureNode.text = (
+                        errorMessage + '\n\n' + stackTrace).decode('utf-8')
 
             # XXX: We don't have a good way to capture these yet
             systemOutNode = ElementTree.Element('system-out')
