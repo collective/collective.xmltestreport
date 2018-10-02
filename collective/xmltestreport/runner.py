@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 # Copyright (c) 2004-2006 Zope Corporation and Contributors.
@@ -13,13 +14,14 @@
 ##############################################################################
 """Test runner based on zope.testing.testrunner
 """
+from collective.xmltestreport.formatter import XMLOutputFormattingWrapper
+from zope.testrunner.options import parser
+from zope.testrunner.runner import Runner
+
+import optparse
 import os
 import sys
 
-from zope.testrunner.runner import Runner
-from zope.testrunner.options import parser
-
-from collective.xmltestreport.formatter import XMLOutputFormattingWrapper
 
 help = """\
 If given, XML reports will be written to the current directory. If you created
