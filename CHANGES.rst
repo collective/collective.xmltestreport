@@ -6,7 +6,8 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- Drop python 2.6 dependency.
+  [gforcada]
 
 New features:
 
@@ -14,8 +15,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
-
+- Clean up the code.
+  [gforcada]
 
 1.3.4 (2017-02-02)
 ------------------
