@@ -6,7 +6,13 @@ Changelog
 
 Breaking changes:
 
-- *add item here*
+- Add compatibility with Python 2 and Python 3.
+  [gforcada]
+
+- Switch from optparse to argparse to work with zope.testrunner >= 4.9.0
+  [pbauer]
+- Drop python 2.6 dependency.
+  [gforcada]
 
 New features:
 
@@ -14,8 +20,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
-
+- Clean up the code.
+  [gforcada]
 
 1.3.4 (2017-02-02)
 ------------------
