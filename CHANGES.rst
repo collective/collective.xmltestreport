@@ -14,10 +14,6 @@ Breaking changes:
 - Drop python 2.6 dependency.
   [gforcada]
 
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Clean up the code.
