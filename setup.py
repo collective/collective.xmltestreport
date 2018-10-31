@@ -3,7 +3,7 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-version = '1.3.5.dev0'
+version = '2.0.0.dev0'
 
 requires = [
     'setuptools',
