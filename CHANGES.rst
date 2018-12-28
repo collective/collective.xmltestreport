@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix ``environment`` option. The ``key`` was used as the ``value``.
 
 
 2.0.0 (2018-10-31)

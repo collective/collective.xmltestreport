@@ -107,7 +107,7 @@ sys.argv[0] = os.path.abspath(sys.argv[0])
 os.chdir({0})
 """
 
-env_template = """os.environ['{0}'] = {0!r}
+env_template = """os.environ['{0}'] = {1!r}
 """
 
 
