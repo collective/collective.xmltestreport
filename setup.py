@@ -18,10 +18,10 @@ if sys.version_info < (2, 5):
     requires.append('elementtree')
 
 
-setup(name='collective.xmltestreport',
+setup(name='collective.xmltestreport-main-test',
       version=version,
       description="A test runner which can output an XML report compatible "
-                  "with JUnit and Jenkins",
+                  "with JUnit and Jenkins. This is a version that tests __main__.py support",
       long_description=(open("README.rst").read() + "\n" +
                         open("CHANGES.rst").read()),
       classifiers=[

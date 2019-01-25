@@ -31,14 +31,14 @@ from collective.xmltestreport.formatter import XMLOutputFormattingWrapper
 try:
     xmlOptions = optparse.OptionGroup(parser, "Generate XML test reports",
                                       "Support for JUnit style XML output")
-                                      xmlOptions.add_option(
-                                                            '--xml', action="store_true", dest='xmlOutput',
-                                                            help="""\
-                                                                If given, XML reports will be written to the current directory. If you created
-                                                                the testrunner using the buildout recipe provided by this package, this will
-                                                                be in the buildout `parts` directroy, e.g. `parts/test`.
-                                                                """)
-                                      parser.add_option_group(xmlOptions)
+    xmlOptions.add_option(
+        '--xml', action="store_true", dest='xmlOutput',
+    help="""\
+    If given, XML reports will be written to the current directory. If you created
+    the testrunner using the buildout recipe provided by this package, this will
+    be in the buildout `parts` directroy, e.g. `parts/test`.
+    """)
+    parser.add_option_group(xmlOptions)
 except AttributeError:
     parser.add_argument('--xml', action="store_true", dest='xmlOutput', help="""\
         If given, XML reports will be written to the current directory. If you created
@@ -82,4 +82,4 @@ def run_internal(defaults=None, args=None, script_parts=None, cwd=None, warnings
         if runner.options.xmlOutput:
             runner.options.output.writeXMLReports()
 
-return runner.failed
+    return runner.failed
