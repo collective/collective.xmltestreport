@@ -1,3 +1,6 @@
 recursive-include collective *
 include *
 global-exclude *.pyc
+include pyproject.toml
+recursive-exclude news *
+exclude news
