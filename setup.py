@@ -23,6 +23,7 @@ setup(
     long_description=(open('README.rst').read() + '\n' +
                       open('CHANGES.rst').read()),
     classifiers=[
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: Zope Public License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
