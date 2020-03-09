@@ -1,3 +1,0 @@
-Add compatibility with `zope.testrunner` 5.1+.
-Fixes https://github.com/zopefoundation/zope.testrunner/issues/103
-[maurits]

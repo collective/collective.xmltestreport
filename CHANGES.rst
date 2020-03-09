@@ -8,6 +8,16 @@ Changelog
 
 .. towncrier release notes start
 
+2.0.2 (2020-03-09)
+------------------
+
+Bug fixes:
+
+
+- Add compatibility with `zope.testrunner` 5.1+.
+  Fixes https://github.com/zopefoundation/zope.testrunner/issues/103
+  [maurits] (#103)
+
 
 2.0.1 (2019-02-02)
 ------------------
