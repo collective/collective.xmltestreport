@@ -44,5 +44,7 @@ setup(
     entry_points="""
       [zc.buildout]
       default = collective.xmltestreport.recipe:TestRunner
+      [console_scripts]
+      xmltestreport = collective.xmltestreport.runner:run
       """,
 )

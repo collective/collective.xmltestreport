@@ -57,24 +57,28 @@ class XMLAwareRunner(Runner):
             self.options.output, cwd=os.getcwd())
 
 
-def run(defaults=None, args=None, script_parts=None):
+def run(defaults=None, args=None, script_parts=None, cwd=None, warnings=None):
     """Main runner function which can be and is being used from main programs.
 
     Will execute the tests and exit the process according to the test result.
 
     """
-    failed = run_internal(defaults, args, script_parts=script_parts)
+    failed = run_internal(
+        defaults, args, script_parts=script_parts, cwd=None, warnings=None
+    )
     sys.exit(int(failed))
 
 
-def run_internal(defaults=None, args=None, script_parts=None):
+def run_internal(defaults=None, args=None, script_parts=None, cwd=None, warnings=None):
     """Execute tests.
 
     Returns whether errors or failures occured during testing.
 
     """
 
-    runner = XMLAwareRunner(defaults, args, script_parts=script_parts)
+    runner = XMLAwareRunner(
+        defaults, args, script_parts=script_parts, cwd=None, warnings=None
+    )
     try:
         runner.run()
     finally:
